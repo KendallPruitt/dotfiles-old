@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/home/kendall/.config'
+let g:netrw_dirhist_2='/etc/profile.d'
+let g:netrw_dirhist_3='/etc/systemd'
+let g:netrw_dirhist_4='/home/kendall/.config/fish'

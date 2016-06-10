@@ -1,0 +1,391 @@
+#! /bin/sh
+#
+ 
+# Absorb all of the rote variable setting to make our panel self-contained
+ 
+# From example .profile changes
+ 
+# PANEL_FIFO="$HOME/.config/bspwm/panfifo"
+# PANEL_HEIGHT="15"
+# PANEL_WM_NAME=bspwm_panel
+# PANEL_FONT_FAMILY="office code pro:size=8:weight=medium"
+# PANEL_FONT_FAMILY="meslo lg s:size=10:weight=bold"
+# PANEL_ICON_FONT1="FontAwesome:size=9"
+# PANEL_ICON_FONT2="material icons:size=11"
+# PANEL_ICON_FONT3="icons:size=12:weight=bold"
+ICON_DESKTOP_UNOCCUPIED=""
+ICON_DESKTOP_OCCUPIED=""
+ICON_CPU=""
+# From panel_colors file
+ 
+COLOR_FOREGROUND='#FFFFFFFF'
+COLOR_BACKGROUND='#252525' # FF212121
+COLOR_ACTIVE_MONITOR_FG='#FF34322E'
+COLOR_ACTIVE_MONITOR_BG='#FF58C5F1'
+COLOR_INACTIVE_MONITOR_FG='#FF58C5F1'
+COLOR_INACTIVE_MONITOR_BG='#FF34322E'
+COLOR_FOCUSED_OCCUPIED_FG='#FFFFFFFF'
+COLOR_FOCUSED_OCCUPIED_BG='#FF004499' # FF0277BD
+COLOR_FOCUSED_FREE_FG='#FFFFFFFF'
+COLOR_FOCUSED_FREE_BG='#FF004499' # FF0277BD
+COLOR_FOCUSED_URGENT_FG='#FFFFFFFF'
+COLOR_FOCUSED_URGENT_BG='#FFFF5722'
+COLOR_OCCUPIED_FG='#FFFFFFFF'
+COLOR_OCCUPIED_BG='#FF505050' # FF424242
+COLOR_FREE_FG='#FFAAAAAA' # FFCCCCCC
+COLOR_FREE_BG='#252525' # FF212121
+COLOR_URGENT_FG='#FFFFFFFF' # FFCCCCCC
+COLOR_URGENT_BG='#FFD75B00' # FFFF5722
+COLOR_LAYOUT_FG='#FFA3A6AB'
+COLOR_LAYOUT_BG='#FF34322E'
+COLOR_TITLE_FG='#FFAAAAAA'
+COLOR_TITLE_BG='#252525' # FF212121
+COLOR_VOLUME_FG='#FF0070FF' # FF29B6F6
+COLOR_VOLUME_BG='#252525' # FF212121
+COLOR_VOLUME_MUTE_FG='#FFFFFFFF'
+COLOR_VOLUME_MUTE_BG='#FF990000' # FF500000
+COLOR_STATUS_FG='#FFAAAAAA' # FFA3A6AB
+COLOR_STATUS_BG='#FF34322E' # FF252525
+ 
+# Kill any panel processes older than us, instead of bailing like the example
+# does. That caused one too many panel-less boots for me.
+ 
+while [ $(pgrep -cx panel) -gt 1 ] ; do
+	pkill -ox -9 panel
+done
+ 
+# Kill any remaining trays / xtitle instances so we don't have multiples.
+ 
+killall -9 stalonetray
+killall -9 xtitle
+ 
+# Setup taken from example, tell bspwm to avoid our status/tray and to start
+# sending status updates to a FIFO
+ 
+trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
+ 
+[ -e "$PANEL_FIFO" ] && rm "$PANEL_FIFO"
+mkfifo "$PANEL_FIFO"
+
+bspc config top_padding $PANEL_HEIGHT
+
+until bspc subscribe report > "$PANEL_FIFO"; do
+    echo "bspc subscribe report crashed with exit code $?.  Respawning.." >&2
+    sleep 1
+done &
+# Here are the subprograms that add information to the status FIFO which are
+# interpreted by panel_bar, below. Each output is detected by its first
+# character, which is how the bspwm internal information is presented.
+ 
+# T - xtitle output
+# S - date output (same as example)
+# B - battery output
+ 
+# Title
+ 
+# xprop -spy -root _NET_ACTIVE_WINDOW | sed -un 's/.*\(0x.*\)/T\1/p' > "$PANEL_FIFO" &
+# xtitle -sf 'T%s' > "$PANEL_FIFO" &
+# Simple date
+# function balancevolume {
+#     while true; do
+#         ALSA_VOLUME_LEFT=$(amixer get Master | grep 'Front Left: Playback' | grep -o '...%' | sed 's/\[//' | sed 's/%//' | sed 's/ //')
+#         eval "amixer -D pulse set Master $ALSA_VOLUME_LEFT%,$ALSA_VOLUME_LEFT%"
+#         sleep 1
+#     done
+# }
+# balancevolume &
+function clock {
+    while true; do
+        date +"S%a %b %-d %-I:%M"
+        sleep 10
+    done
+}
+ 
+clock > "$PANEL_FIFO" &
+
+
+padding="  "
+
+function spaceicon() {
+    echo -e "\uf$(echo "obase=16;ibase=16;452+$1*3+$2" | bc)"
+    # echo ""
+}
+
+function taskicon {
+    tree=$(bspc query -T --desktop "$name")
+
+    case $tree in
+        *"Krita"*)
+            echo -e ""
+            ;;
+        *"Firefox"*)
+            echo -e ""
+            ;;
+        *"chromium"*)
+            echo -e ""
+            ;;
+        *"Vlc"*)
+            echo -e ""
+            ;;
+        *"Flashplayer"*)
+            echo -e ""
+            ;;
+        *"\"className\":\"S\""*)
+            echo -e ""
+            ;;
+        *"\"className\":\"Subl"*)
+            echo -e ""
+            ;;
+        *"Music"*)
+            echo -e ""
+            ;;
+        *"Tomahawk"*)
+            echo -e ""
+            ;;
+        *"termite"*)
+            echo -e ""
+            ;;
+        *"xterm"*)
+            echo -e ""
+            ;;
+        *"terminator"*)
+            echo -e ""
+            ;;
+        *"Steam"*)
+            echo -e ""
+            ;;
+        *"Deluge"*)
+            echo -e ""
+            ;;
+        *"Thunar"*)
+            echo -e ""
+            ;;
+        *"Lxappearance"*)
+            echo -e ""
+            ;;
+        *)
+            echo -e ""
+            ;;
+    esac
+}
+ 
+# No frills battery monitor (Linux specific, probably)
+# This is only enabled on certain hostnames, at the end of this file.
+ 
+# BAT="/sys/class/power_supply/BAT0"
+ 
+# function bat_percent {
+#     while true; do
+#         CHARGE_NOW=`cat $BAT/charge_now`
+#         CHARGE_FULL=`cat $BAT/charge_full`
+#         PERCENT=`echo "($CHARGE_NOW * 100)/$CHARGE_FULL" | bc`
+#         STATUS=`cat $BAT/status`
+
+#         if [ $STATUS == "Charging" ]; then
+#             STATUS="+"
+#         elif [ $STATUS == "Discharging" ]; then
+#             STATUS="-"
+#         else
+#             STATUS=""
+#         fi
+ 
+#         echo "B$STATUS$PERCENT"
+#         sleep 1
+#     done
+# }
+
+# alsa volume
+function volume {
+    ALSA_VOLUME=$(amixer get Master | grep 'Front Left: Playback' | grep -o '...%' | sed 's/\[//' | sed 's/%//' | sed 's/ //')
+    ALSA_STATE=$(amixer get Master | grep 'Front Left: Playback' | grep -o '\[on]')
+    if [ "$ALSA_STATE" ]
+    then
+        if [ "$ALSA_VOLUME" -ge 70 ]; then
+            echo "V%{A1:mymixer:}%{A3:amixer set Master toggle:}%{A4:myvolumeup:}%{A5:myvolumedown:}$ALSA_VOLUME%{A}%{A}%{A}%{A}"
+        elif [ "$ALSA_VOLUME" -gt 0 -a "$ALSA_VOLUME" -lt 70 ]; then
+            echo "V%{A1:mymixer:}%{A3:amixer set Master toggle:}%{A4:myvolumeup:}%{A5:myvolumedown:}$ALSA_VOLUME%{A}%{A}%{A}%{A}"
+        elif [ "$ALSA_VOLUME" -eq 0 ]; then
+            echo "V%{A1:mymixer:}%{A3:amixer set Master toggle:}%{A4:myvolumeup:}%{A5:myvolumedown:}$ALSA_VOLUME%{A}%{A}%{A}%{A}"
+        else
+            echo "V%{A1:mymixer:}%{A3:amixer set Master toggle:}%{A4:myvolumeup:}%{A5:myvolumedown:}$ALSA_VOLUME%{A}%{A}%{A}%{A}"
+        fi
+    else
+        echo "V%{A1:mymixer:}%{A3:amixer set Master toggle:}%{A4:myvolumeup:}%{A5:myvolumedown:}%{F$COLOR_VOLUME_MUTE_FG}%{B$COLOR_VOLUME_MUTE_BG}$ALSA_VOLUME%{B-}%{F-}%{A}%{A}%{A}%{A}"
+    fi
+    #echo `amixer get Master | awk '$0~/%/{print $5}' | tr -d '[]%' | gdbar -bg $COLOR_VOLUME_BG -fg $COLOR_VOLUME_FG -w 100 -h 8 -s o -nonl`
+}
+volume > $PANEL_FIFO &
+
+
+# Network
+# while true; do
+#     echo "N$(cat /sys/class/net/enp3s0/statistics/rx_bytes)"
+#     sleep 2
+# done > "$PANEL_FIFO" &
+
+
+# Now panel_bar, which was mostly taken from the example panel_bar, with a
+# handful of improvements.
+
+# - functionified, from panel_bar file of example
+# - the output changes based on the number of monitors, to place a single
+# monitors's information on that same monitor, instead of all in one corner.
+# - added B header for battery
+# - all the desktop indicators are enumerated
+
+num_mon=$(bspc query -M | wc -l)
+
+wm_info_array=("" "" "" "" "")
+
+function panel_bar {
+    while read -r line < $PANEL_FIFO; do
+        case $line in
+            # A* )
+            #     title=$(xprop -id ${line#?} | awk '/_NET_WM_NAME/{$1=$2="";print}' | cut -d'"' -f2 | awk -v len=100 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }')
+            #     ;;
+            S*)
+                # clock output
+                date="${line#?}"
+                ;;
+            A*)
+                # volume adjust
+                volume="amixer -D pulse set Master ${line#?}"
+                date="lalala"
+                ;;
+            V*)
+                # volume output
+                volume="%{F$COLOR_VOLUME_FG}%{B$COLOR_VOLUME_BG}${line#?}%{B-}%{F-}"
+                ;;
+            # B*)
+            #     # battery output
+            #     percent="${line#?}"
+            #     ;;
+            # T*)
+            #     # xtitle output
+            #     title="%{F$COLOR_TITLE_FG}%{B$COLOR_TITLE_BG}${line#?}%{B-}%{F-}"
+            #     ;;
+            W*)
+                # bspwm internal state
+                wm_infos=""
+                cur_mon=-1
+                desktop_num=1
+
+                IFS=':'
+                set -- ${line#?}
+                while [ $# -gt 0 ] ; do
+                    item="$1"
+                    name=${item#?}
+                    #name="%{A1:bspc desktop -f $name:} ${name} %{A}"
+                    case $item in
+                        [mM]*)
+                            [ $num_mon -lt 2 ] && shift && continue
+                            case $item in
+                                m*)
+                                    # monitor
+                                    wm_infos=""
+                                    cur_mon=$((cur_mon + 1))
+                                    FG="$COLOR_MONITOR_FG"
+                                    BG="$COLOR_MONITOR_BG"
+                                    ;;
+                                M*)
+                                    # focused monitor
+                                    wm_infos=""
+                                    cur_mon=$((cur_mon + 1))
+                                    FG="$COLOR_FOCUSED_MONITOR_FG"
+                                    BG="$COLOR_FOCUSED_MONITOR_BG"
+                                    ;;
+                            esac
+                            # wm_infos="${wm_infos}%{F${FG}}%{B${BG}}%{A:bspc monitor -f ${name}:} ${ICON_DESKTOP_OCCUPIED} ${name} %{A}%{B-}%{F-}"
+                            ;;
+                        [fFoOuU]*)
+                            case $item in
+                                O*)
+                                    # focused occupied desktop
+                                    FG="$COLOR_FOCUSED_OCCUPIED_FG"
+                                    BG="$COLOR_FOCUSED_OCCUPIED_BG"
+                                    icon="%{U$COLOR_FOREGROUND}%{A1:bspc desktop -f ${name}:}$padding$(taskicon)$padding%{A}"
+                                    # %{U$COLOR_FOREGROUND}%{+u} ${ICON_DESKTOP_OCCUPIED} ${name} %{-u}
+                                    desktop_num=$((desktop_num + 1))
+                                    ;;
+                                F*)
+                                    # focused free desktop
+                                    FG="$COLOR_FOCUSED_FREE_FG"
+                                    BG="$COLOR_FOCUSED_FREE_BG"
+                                    icon="%{U$COLOR_FOREGROUND}%{A1:bspc desktop -f ${name}:}$padding${ICON_DESKTOP_UNOCCUPIED}$padding%{A}"
+                                    desktop_num=$((desktop_num + 1))
+                                    ;;
+                                U*)
+                                    # focused urgent desktop
+                                    FG="$COLOR_FOCUSED_URGENT_FG"
+                                    BG="$COLOR_FOCUSED_URGENT_BG"
+                                    icon="%{U$COLOR_FOREGROUND}%{A1:bspc desktop -f ${name}:}$padding$(taskicon)$padding%{A}"
+                                    desktop_num=$((desktop_num + 1))
+                                    ;;
+                                o*)
+                                    # occupied desktop
+                                    FG="$COLOR_OCCUPIED_FG"
+                                    BG="$COLOR_OCCUPIED_BG"
+                                    icon="%{A1:bspc desktop -f ${name}:}$padding$(taskicon)$padding%{A}"
+                                    desktop_num=$((desktop_num + 1))
+                                    ;;
+                                f*)
+                                    # free desktop
+                                    FG="$COLOR_FREE_FG"
+                                    BG="$COLOR_FREE_BG"
+                                    icon="%{A1:bspc desktop -f ${name}:}$padding${ICON_DESKTOP_UNOCCUPIED}$padding%{A}"
+                                    desktop_num=$((desktop_num + 1))
+                                    ;;
+                                u*)
+                                    # urgent desktop
+                                    FG="$COLOR_URGENT_FG"
+                                    BG="$COLOR_URGENT_BG"
+                                    icon="%{A1:bspc desktop -f ${name}:}$padding$(taskicon)$padding%{A}"
+                                    desktop_num=$((desktop_num + 1))
+                                    ;;
+                            esac
+                            wm_infos="${wm_infos}%{F${FG}}%{B${BG}}${icon}%{B-}%{F-}"
+                            ;;
+                        [LTG]*)
+                            # layout
+                            #wm_infos="${wm_infos}%{F$COLOR_LAYOUT_FG}%{B$COLOR_LAYOUT_BG} ${ICON_DESKTOP_UNOCCUPIED} %{B-}%{F-}"
+                            ;;
+                    esac
+                    shift
+                    wm_info_array[cur_mon]="$wm_infos"
+                done
+                ;;
+        esac
+
+        if [ $num_mon -eq 1 ]; then
+            fmt="%{l}${wm_info_array[0]}%{c}${title}%{r}${volume} ${date} "
+        elif [ $num_mon -eq 2 ]; then
+            fmt="%{l}${wm_info_array[1]}%{c}${title}%{S+}%{l}${wm_info_array[0]}%{c}${title}%{r}${volume} ${date} "
+        else
+            # Same as 2 -- needs someone to test
+            fmt="%{l}${wm_info_array[1]}%{c}${title}%{S+}%{l}${wm_info_array[0]}%{c}${title}%{r}${volume} ${date} "
+        fi
+        printf "%s\n" "$fmt"
+    done
+}
+# Actually invoking the panel and piping to bar
+panel_bar | lemonbar -a 32 -n "$PANEL_WM_NAME" -g x"$PANEL_HEIGHT" -f "$PANEL_FONT" -f "$PANEL_ICON_FONT1" -f "$PANEL_ICON_FONT2" -f "$PANEL_ICON_FONT3" -F "$COLOR_FOREGROUND" -B "$COLOR_BACKGROUND" -o -1 | sh &
+
+
+# wid=$(xdo id -a "$PANEL_WM_NAME")
+# tries_left=20
+# while [ -z "$wid" -a "$tries_left" -gt 0 ] ; do
+#     sleep 0.05
+#     wid=$(xdo id -a "$PANEL_WM_NAME")
+#     tries_left=$((tries_left - 1))
+# done
+# [ -n "$wid" ] && xdo above -t "$(xdo id -N Bspwm -n root | sort | head -n 1)" "$wid"
+
+# Forcing stalonetray into a reasonable place
+
+TRAY_GEOM="1x1-1920"
+#TRAY_GEOM="1x1+1920"
+
+stalonetray --geometry "$TRAY_GEOM" -i "$PANEL_HEIGHT" -bg "$COLOR_BACKGROUND" &
+# stalonetray --geometry "$TRAY_GEOM" -i "$PANEL_HEIGHT" -bg "$COLOR_BACKGROUND" --kludges force_icons_size &
+
+wait

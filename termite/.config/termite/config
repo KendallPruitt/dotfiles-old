@@ -1,0 +1,46 @@
+[options]
+font = Office Code Pro Medium 8
+scrollback_lines = 10000
+mouse_autohide = true
+clickable_url = true
+
+[colors]
+foreground        = #ffffff
+foreground_bold   = #ffffff
+cursor            = #ffffff
+cursor_foreground = #ffffff
+background        = rgba(0, 0, 0, 0.8)
+active_background = rgba(0, 0, 100, 0.8)
+active_foreground = #ffffff
+
+# black
+color0  = #252525
+color8  = #505050
+
+# red
+color1  = #990000
+color9  = #e50000
+
+# green
+color2  = #008715
+color10 = #00ff27
+
+# yellow
+color3  = #d75b00
+color11 = #ffc500
+
+# blue
+color4  = #004499
+color12 = #0070ff
+
+# pink
+color5  = #820082
+color13 = #ff00a8
+
+# cyan
+color6  = #00a6a6
+color14 = #00ffff
+
+# white
+color7  = #aaaaaa
+color15 = #ffffff
