@@ -1,3 +1,6 @@
+### 3 '#'s denote shortcuts made by me (not including shortcuts I've edited)
+
+
 #
 # wm independent hotkeys
 #
@@ -14,29 +17,50 @@ super + space
 super + Escape
 	pkill -USR1 -x sxhkd
 
-#
-# Multimedia Keys
-#
 
-# Increase volume
+###
+### multimedia keys
+###
+
+### increase volume
 XF86AudioRaiseVolume
 	myvolumeup
 
-# Decrease volume
+### decrease volume
 XF86AudioLowerVolume
 	myvolumedown
 
-# Mute volume
+### mute volume
 XF86AudioMute
 	myvolumetoggle
 
-# Stop
+### stop
 
-# Previous Track
+### previous track
 
-# Play/Pause
+### play/pause
 
-# Next Track
+### next track
+
+
+###
+### other shortcuts added by me
+###
+
+### horizontal scrolling
+shift + button{4,5}
+	xdotool click {6,7}
+
+### next/previous tab
+super + button8
+	xdotool key ctrl+Prior
+super + button9
+	xdotool key ctrl+Next
+
+### desktop scrolling
+super + button{4,5}
+	bspc desktop -f {prev,next}
+
 
 #
 # bspwm hotkeys
@@ -62,9 +86,10 @@ super + y
 super + b
 	bspc node -s biggest
 
-# Reducing gap on the fly
+# reducing gap on the fly
 alt + {minus,equal}
 	bspc config -d focused window_gap $((`bspc config -d focused window_gap` {+,-} 2 ))
+
 
 #
 # state/flags
@@ -77,6 +102,7 @@ super + {t,shift + t,f,g}
 # set the node flags
 super + ctrl + {x,y,z}
 	bspc node -g {locked,sticky,private}
+
 
 #
 # focus/swap
@@ -115,6 +141,7 @@ super + {_,shift + }{1-5}
 super + alt + {_,shift + }{1-5}
 	bspc {desktop -f,node -d} '^{6-9,10}'
 
+
 #
 # preselect
 #
@@ -135,6 +162,7 @@ super + ctrl + space
 super + ctrl + shift + space
 	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
 
+
 #
 # resize tiled/floating
 #
@@ -150,6 +178,7 @@ super + alt + shift + {h,j,k,l}
 # move a floating window
 super + {Left,Down,Up,Right}
 	xdo move {-x -20,-y +20,-y -20,-x +20}
+
 
 #
 # pointer focus/move/resize
