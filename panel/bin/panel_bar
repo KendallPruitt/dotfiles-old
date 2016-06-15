@@ -1,0 +1,227 @@
+#! /bin/sh
+
+#. panel_icons
+TASK_ICON_SPACING="  "
+ICON_BATT_FULL=""
+ICON_BATT_LOW=""
+ICON_BATT_HALF=""
+ICON_BATT_LOW=""
+ICON_BATT_EMPTY=""
+ICON_VOL_HIGH=""
+ICON_VOL_LOW=""
+ICON_VOL_OFF=""
+ICON_VOL_MUTE=""
+ICON_CLOCK=""
+ICON_ARROW_L=""
+ICON_ARROW_R=""
+SMALL_SPACE=" "
+
+#. panel_colors
+COLOR_BLACK='#FF000000'
+COLOR_B_BLACK='#FF252525'
+COLOR_F_BLACK='#FF505050'
+COLOR_B_RED='#FF990000'
+COLOR_F_RED='#FFE50000'
+COLOR_B_GREEN='#FF008715'
+COLOR_F_GREEN='#FF00FF27'
+COLOR_B_YELLOW='#FFD75B00'
+COLOR_F_YELLOW='#FFFFC500'
+COLOR_B_BLUE='#FF004499'
+COLOR_F_BLUE='#FF0070FF'
+COLOR_B_MAGENTA='#FF820082'
+COLOR_F_MAGENTA='#FFFF00A8'
+COLOR_B_CYAN='#FF00A6A6'
+COLOR_F_CYAN='#FF00FFFF'
+COLOR_B_WHITE='#FFAAAAAA'
+COLOR_F_WHITE='#FFFFFFFF'
+COLOR_FREE_BG='#FF333232'
+#COLOR_OCCUPIED_BG='#FFAAAAAA'
+COLOR_OCCUPIED_BG='#FF004499'
+#COLOR_FOCUSED_BG='#FF004499'
+COLOR_FOCUSED_BG='#FF008715'
+COLOR_URGENT_BG='#FFD75B00'
+COLOR_FG='#FF000000'
+COLOR_PANEL_BG='#FF151515'
+COLOR_VOL_BG='#FF004499'
+COLOR_VOL_MUTE_BG='#FFFFFFFF'
+COLOR_VOL_MUTE_FG='#FF000000'
+COLOR_BATT_HIGH_BG='#FF008715'
+COLOR_BATT_MED_BG='#FFD75B00'
+#COLOR_BATT_LOW_BG='#FF000000'
+COLOR_BATT_LOW_BG='#FF990000'
+#COLOR_BATT_LOW_FG='#FFE50000'
+COLOR_BATT_LOW_FG='#FF000000'
+COLOR_TITLE_BG='#FF004499'
+COLOR_CLOCK_BG='#FF004499'
+COLOR_TITLE_FG='#FF000000'
+
+
+
+num_mon=$(bspc query -M | wc -l)
+
+desktop_icons=("$TASK_ICON_SPACING" "$TASK_ICON_SPACING" "$TASK_ICON_SPACING" "$TASK_ICON_SPACING" "$TASK_ICON_SPACING" "$TASK_ICON_SPACING" "$TASK_ICON_SPACING" "$TASK_ICON_SPACING" "$TASK_ICON_SPACING" "$TASK_ICON_SPACING")
+desktop_colors=("$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG")
+color_vol_bg="$COLOR_VOL_BG"
+color_batt_bg="$COLOR_BATT_HIGH_BG"
+color_batt_fg="$COLOR_FG"
+color_vol_fg="$COLOR_FG"
+while read -r line ; do
+    case $line in
+        PS*)
+            playing="%{A1:mpc toggle:}%{A2:urxvt -e /usr/bin/cava &:}%{A3:mpc stop:}%{A4:mpc next:}%{A5:mpc prev:}${line#??}%{A}%{A}%{A}%{A}%{A}"
+            ;;
+        S*)
+            # clock output
+            time_date="${line#?}"
+            ;;
+        T*)
+            # xtitle output
+            title="${line#?}"
+            ;;
+        B*)
+            # battery output
+            BATT=${line#?}
+            if [ "${BATT}" -ge 90 ]; then
+                BATT="$ICON_BATT_FULL$BATT"
+                color_batt_bg="$COLOR_BATT_HIGH_BG"
+                color_batt_fg="$COLOR_FG"
+            elif [ "${BATT}" -ge 65 ]; then
+                BATT="$ICON_BATT_HIGH$BATT"
+                color_batt_bg="$COLOR_BATT_HIGH_BG"
+                color_batt_fg="$COLOR_FG"
+            elif [ "${BATT}" -ge 35 ]; then
+                BATT="$ICON_BATT_HALF$BATT"
+                color_batt_bg="$COLOR_BATT_MED_BG"
+                color_batt_fg="$COLOR_FG"
+            elif [ "${BATT}" -ge 10 ]; then
+                BATT="$ICON_BATT_LOW$BATT"
+                color_batt_bg="$COLOR_BATT_LOW_BG"
+                color_batt_fg="$COLOR_BATT_LOW_FG"
+            else
+                BATT="$ICON_BATT_EMPTY$BATT"
+                color_batt_bg="$COLOR_BATT_LOW_BG"
+                color_batt_fg="$COLOR_BATT_LOW_FG"
+            fi
+            ;;
+        V*)
+            # volume
+            vol_value="${line#?}"
+            vol_state=$(amixer get Master | grep 'Mono: Playback' | grep -o '\[on]')
+            if [ $vol_state ]; then
+                color_vol_bg="$COLOR_VOL_BG"
+                color_vol_fg="$COLOR_FG"
+                if [ "${vol_value}" -ge 70 ]; then
+                    volume="$ICON_VOL_HIGH$vol_value"
+                elif [ "${vol_value}" -gt 0 ]; then
+                    volume="$ICON_VOL_LOW$vol_value"
+                else
+                    volume="$ICON_VOL_OFF$vol_value"
+                fi
+            else
+                color_vol_bg="$COLOR_VOL_MUTE_BG"
+                color_vol_fg="$COLOR_VOL_MUTE_FG"
+                volume="$ICON_VOL_MUTE$vol_value"
+            fi
+            ;;
+        W*)
+            # bspwm internal state
+            wm_infos=""
+            IFS=':'
+            set -- ${line#?}
+            while [ $# -gt 0 ] ; do
+                item=$1
+                name="${item#?}"
+                # name="$(icon $ICON_CLOCK)"
+                # name="%{A:bspc desktop -f $name:} ${name} %{A}"
+                case $item in
+                    # M*)
+                    #     # active monitor
+                    #     if [ $num_mon -gt 1 ] ; then
+                    #         wm_infos="$wm_infos %{F$COLOR_ACTIVE_MONITOR_FG}%{B$COLOR_ACTIVE_MONITOR_BG} ${name} %{B-}%{F-}  "
+                    #     fi
+                    #     ;;
+                    # m*)
+                    #     # inactive monitor
+                    #     if [ $num_mon -gt 1 ] ; then
+                    #         wm_infos="$wm_infos %{F$COLOR_INACTIVE_MONITOR_FG}%{B$COLOR_INACTIVE_MONITOR_BG} ${name} %{B-}%{F-}  "
+                    #     fi
+                    #     ;;
+                    O*)
+                        # focused occupied desktop
+                        #desktop_colors[${name}-1]="$COLOR_FOCUSED_BG"
+                        desktop_colors[${name}-1]="$color_batt_bg"
+                        desktop_icons[${name}-1]=$(get_task_icon "${name}")
+                        #wm_infos="$wm_infos${name}"
+                        ;;
+                    F*)
+                        # focused free desktop
+                        #desktop_colors[${name}-1]="$COLOR_FOCUSED_BG"
+                        desktop_colors[${name}-1]="$color_batt_bg"
+                        desktop_icons[${name}-1]="$TASK_ICON_SPACING"
+                        #wm_infos="$wm_infos${name}"
+                        ;;
+                    U*)
+                        # focused urgent desktop
+                        desktop_colors[${name}-1]="$COLOR_URGENT_BG"
+                        desktop_icons[${name}-1]=$(get_task_icon "${name}")
+                        #wm_infos="$wm_infos${name}"
+                        ;;
+                    o*)
+                        # occupied desktop
+                        desktop_colors[${name}-1]="$COLOR_OCCUPIED_BG"
+                        desktop_icons[${name}-1]=$(get_task_icon "${name}")
+                        #wm_infos="$wm_infos${name}"
+                        ;;
+                    f*)
+                        # free desktop
+                        desktop_colors[${name}-1]="$COLOR_PANEL_BG"
+                        desktop_icons[${name}-1]="$TASK_ICON_SPACING"
+                        #wm_infos="$wm_infos${name}"
+                        ;;
+                    u*)
+                        # urgent desktop
+                        desktop_colors[${name}-1]="$COLOR_URGENT_BG"
+                        desktop_icons[${name}-1]=$(get_task_icon "${name}")
+                        #wm_infos="$wm_infos${name}"
+                        ;;
+                    # L*)
+                    #     # layout
+                    #     wm_infos="$wm_infos  %{F$COLOR_LAYOUT_FG}%{B$COLOR_LAYOUT_BG} ${name} %{B-}%{F-}"
+                    #     ;;
+                esac
+                shift
+            done
+            wm_infos="%{A2:bspc desktop -f prev:}%{A1:bspc desktop -f 1:}%{B${desktop_colors[0]}}%{F$COLOR_FG}  ${desktop_icons[0]} %{F-}%{B-}\
+%{B${desktop_colors[1]}}%{F${desktop_colors[0]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 2:}%{F$COLOR_FG} ${desktop_icons[1]} %{F-}%{B-}\
+%{B${desktop_colors[2]}}%{F${desktop_colors[1]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 3:}%{F$COLOR_FG} ${desktop_icons[2]} %{F-}%{B-}\
+%{B${desktop_colors[3]}}%{F${desktop_colors[2]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 4:}%{F$COLOR_FG} ${desktop_icons[3]} %{F-}%{B-}\
+%{B${desktop_colors[4]}}%{F${desktop_colors[3]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 5:}%{F$COLOR_FG} ${desktop_icons[4]} %{F-}%{B-}\
+%{B${desktop_colors[5]}}%{F${desktop_colors[4]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 6:}%{F$COLOR_FG} ${desktop_icons[5]} %{F-}%{B-}\
+%{B${desktop_colors[6]}}%{F${desktop_colors[5]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 7:}%{F$COLOR_FG} ${desktop_icons[6]} %{F-}%{B-}\
+%{B${desktop_colors[7]}}%{F${desktop_colors[6]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 8:}%{F$COLOR_FG} ${desktop_icons[7]} %{F-}%{B-}\
+%{B${desktop_colors[8]}}%{F${desktop_colors[7]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 9:}%{F$COLOR_FG} ${desktop_icons[8]} %{F-}%{B-}\
+%{B${desktop_colors[9]}}%{F${desktop_colors[8]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 10:}%{F$COLOR_FG} ${desktop_icons[9]} %{F-}%{B-}\
+%{B${desktop_colors[10]}}%{F${desktop_colors[9]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 11:}%{F$COLOR_FG} ${desktop_icons[10]} %{F-}%{B-}\
+%{B$COLOR_PANEL_BG}%{F${desktop_colors[10]}}$ICON_ARROW_R%{F-}%{B-}%{A}%{A}"
+            ;;
+    esac
+    echo -e "%{l}${wm_infos}\
+%{c}%{F$COLOR_TITLE_BG}$ICON_ARROW_L%{F-}%{B$COLOR_TITLE_BG}%{F$COLOR_TITLE_FG} ${title} %{F-}%{B-}%{F$COLOR_TITLE_BG}$ICON_ARROW_R%{F-}\
+%{r}%{A1:pavucontrol:}%{A3:myvolumetoggle:}%{A4:myvolumeup:}%{A5:myvolumedown:}\
+%{F${color_vol_bg}}$ICON_ARROW_L%{F-}\
+%{B${color_vol_bg}}%{F${color_vol_fg}}${volume} %{F-}%{A}%{A}%{A}%{A}\
+%{F${color_batt_bg}}$ICON_ARROW_L%{F-}%{B-}\
+%{B${color_batt_bg}}%{F${color_batt_fg}} ${BATT} %{F-}\
+%{F${COLOR_CLOCK_BG}}$ICON_ARROW_L%{F-}%{B-}\
+%{B${COLOR_CLOCK_BG}}%{F${COLOR_FG}} ${time_date} %{F-}%{B-}"
+done
