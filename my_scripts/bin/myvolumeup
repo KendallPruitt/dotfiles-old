@@ -1,36 +1,18 @@
 #! /bin/sh
 
-# PANEL_FIFO="$HOME/.config/bspwm/panfifo"
-COLOR_VOLUME_FG='#FF00A0FF'
-COLOR_VOLUME_BG='#FF303030'
-COLOR_VOLUME_MUTE_FG='#FF000000'
-COLOR_VOLUME_MUTE_BG='#FFFF0000'
-
 # amixer set Master 2%+,2%+
 # amixer -D pulse set Master 2%+,2%+
-ALSA_VOLUME=$(amixer get Master | grep 'Front Left: Playback' | grep -o '...%' | sed 's/\[//' | sed 's/%//' | sed 's/ //')
-if [ $ALSA_VOLUME -lt 100 ]; then
-    pactl set-sink-volume 1 +2%
-else
-    pactl set-sink-volume 1 100%
-fi
+#ALSA_VOLUME=$(amixer get Master | grep 'Front Left: Playback' | grep -o '...%' | sed 's/\[//' | sed 's/%//' | sed 's/ //')
+#ALSA_VOLUME=$(amixer get Master | grep 'Mono: Playback' | grep -o '...%' | sed 's/\[//' | sed 's/%//' | sed 's/ //')
 
-function volume {
-    ALSA_VOLUME=$(amixer get Master | grep 'Front Left: Playback' | grep -o '...%' | sed 's/\[//' | sed 's/%//' | sed 's/ //')
-    ALSA_STATE=$(amixer get Master | grep 'Front Left: Playback' | grep -o '\[on]')
-    if [ $ALSA_STATE ]
-    then
-        if [ $ALSA_VOLUME -ge 70 ]; then
-            echo "V%{A1:mymixer:}%{A3:myvolumetoggle:}%{A4:myvolumeup:}%{A5:myvolumedown:}$ALSA_VOLUME%{A}%{A}%{A}%{A}"
-        elif [ $ALSA_VOLUME -gt 0 -a $ALSA_VOLUME -lt 70 ]; then
-            echo "V%{A1:mymixer:}%{A3:myvolumetoggle:}%{A4:myvolumeup:}%{A5:myvolumedown:}$ALSA_VOLUME%{A}%{A}%{A}%{A}"
-        elif [ $ALSA_VOLUME -eq 0 ]; then
-            echo "V%{A1:mymixer:}%{A3:myvolumetoggle:}%{A4:myvolumeup:}%{A5:myvolumedown:}$ALSA_VOLUME%{A}%{A}%{A}%{A}"
-        else
-            echo "V%{A1:mymixer:}%{A3:myvolumetoggle:}%{A4:myvolumeup:}%{A5:myvolumedown:}$ALSA_VOLUME%{A}%{A}%{A}%{A}"
-        fi
-    else
-        echo "V%{A1:mymixer:}%{A3:myvolumetoggle:}%{A4:myvolumeup:}%{A5:myvolumedown:}%{F$COLOR_VOLUME_MUTE_FG}%{B$COLOR_VOLUME_MUTE_BG}$ALSA_VOLUME%{B-}%{F-}%{A}%{A}%{A}%{A}"
-    fi
-}
-volume > $PANEL_FIFO &
+ALSA_VOLUME=`pactl list sinks | grep '^[[:space:]]Volume:' | \
+    head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,'`
+if [ "$ALSA_VOLUME" -lt 100 ]; then
+    pactl set-sink-volume 0 +2%
+    ALSA_VOLUME=`pactl list sinks | grep '^[[:space:]]Volume:' | \
+        head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,'`
+else
+    pactl set-sink-volume 0 100%
+    ALSA_VOLUME="100"
+fi
+echo "V$ALSA_VOLUME" > $PANEL_FIFO &
