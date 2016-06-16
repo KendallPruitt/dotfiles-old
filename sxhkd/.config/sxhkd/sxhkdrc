@@ -24,15 +24,15 @@ super + Escape
 
 ### increase volume
 XF86AudioRaiseVolume
-    myvolumeup
+    volumeadjust -u
 
 ### decrease volume
 XF86AudioLowerVolume
-    myvolumedown
+    volumeadjust -d
 
 ### mute volume
 XF86AudioMute
-    myvolumetoggle
+    volumeadjust -t
 
 ### stop
 

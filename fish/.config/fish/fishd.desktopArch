@@ -13,10 +13,12 @@ SET budspencer_pwdstyle:short\x1elong\x1enone
 SET budspencer_session_cmd_hist__config_termite_config:yaourt\x20\x2dSyu\x1el\x20\x2econfig/\x1el\x20\x2econfig/termite\x1evim\x20\x2econfig/termite/config
 SET budspencer_session_cmd_hist__home_kendall__config_termite_config:la\x1ela\x20\x2econfig\x1emkdir\x20\x7e/\x2econfig/termite\x1evim\x20\x7e/\x2econfig/termite/config
 SET budspencer_session_cmd_hist_bin_panel:sudo\x20pacman\x20\x2dS\x20flashplugin\x1esudo\x20pacman\x20\x2dS\x20flashplayer\x2dstandalone\x1eyaourt\x20flashplayer\x2dstandalone\x1el\x20Downloads/\x1eranger\x1emv\x20Downloads/rebuild_dmenu_extended_cache\x20bin/\x1el\x20bin\x1evim\x20bin/rebuild_dmenu_extended_cache\x1echmod\x20755\x20mysettime\x1echmod\x20755\x20rebuild_dmenu_extended_cache\x1e\x2e/rebuild_dmenu_extended_cache\x1evim\x20bin/mysettime\x1evim\x20bin/panel\x1e\x23
+SET budspencer_session_cmd_hist_my_scripts_bin_myvolumeup:ranger\x1egit\x20clone\x1eyaourt\x20nerd\x20font\x1edf\x1evim\x20/etc/yaourtrc\x1esudo\x20vim\x20/etc/yaourtrc\x1el\x20my_scripts/bin/\x1evim\x20my_scripts/bin/myvolumeup\x1eps\x1ejobs\x1esubl\x20my_scripts/bin/myvolumeup\x1eset\x20HOSTNAME\x20\x22desktopArch\x22\x1efunctions\x1ehostname
 SET budspencer_session_dir_hist__config_termite_config:/home/kendall
 SET budspencer_session_dir_hist__home_kendall__config_termite_config:/home/kendall
 SET budspencer_session_dir_hist_bin_panel:/home/kendall/bin\x1e/home/kendall
-SET budspencer_sessions:_config_termite_config\x1ebin_panel\x1e_home_kendall__config_termite_config
+SET budspencer_session_dir_hist_my_scripts_bin_myvolumeup:/home/kendall\x1e/home/kendall/dotfiles
+SET budspencer_sessions:my_scripts_bin_myvolumeup\x1e_config_termite_config\x1ebin_panel\x1e_home_kendall__config_termite_config
 SET budspencer_sessions_active:\x1d
 SET budspencer_sessions_active_pid:\x1d
 SET fish_color_autosuggestion:555\x1eyellow

@@ -31,8 +31,12 @@
 # done
 # "A$adjustment" > $VOLUME_FIFO &
 # amixer -D pulse set Master toggle
-
-pactl set-sink-mute 0 toggle
-ALSA_VOLUME=`pactl list sinks | grep '^[[:space:]]Volume:' | \
-    head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,'`
+if [ "$HOSTNAME" == "desktopArch" ]; then
+    pactl set-sink-mute 1 toggle
+    ALSA_VOLUME=$(amixer get Master | grep 'Front Left: Playback' | grep -o '...%' | sed 's/\[//' | sed 's/%//' | sed 's/ //')
+else
+    pactl set-sink-mute 0 toggle
+    ALSA_VOLUME=`pactl list sinks | grep '^[[:space:]]Volume:' | \
+        head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,'`
+fi
 echo "V$ALSA_VOLUME" > $PANEL_FIFO &
