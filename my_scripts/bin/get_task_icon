@@ -1,0 +1,109 @@
+#! /bin/sh
+
+#. panel_icons
+TASK_ICON_BRUSH=""
+TASK_ICON_FIREFOX=""
+TASK_ICON_CHROME=""
+TASK_ICON_VIDEO=""
+TASK_ICON_DOCUMENT=""
+TASK_ICON_MUSIC=""
+TASK_ICON_TOMAHAWK=""
+TASK_ICON_TERMINAL1=""
+TASK_ICON_GOOGLE=""
+TASK_ICON_STEAM1=""
+TASK_ICON_STEAM2=""
+TASK_ICON_DELUGE=""
+TASK_ICON_FOLDER1=""
+TASK_ICON_FOLDER2=""
+TASK_ICON_PALETTE=""
+TASK_ICON_SOLID=""
+TASK_ICON_EMPTY=""
+TASK_ICON_SPACING="  "
+TASK_ICON_HOME=""
+TASK_ICON_DOWNLOADS=""
+TASK_ICON_FOLDER_OPEN=""
+TASK_ICON_PYTHON=""
+TASK_ICON_DROPBOX=""
+TASK_ICON_GITHUB1=""
+TASK_ICON_GITHUB2=""
+TASK_ICON_GITHUB3=""
+TASK_ICON_GITHUB4=""
+TASK_ICON_GITHUB5=""
+TASK_ICON_GITHUB6=""
+TASK_ICON_GIT1=""
+TASK_ICON_GIT2=""
+TASK_ICON_YOUTUBE=""
+TASK_ICON_ARCH=""
+TASK_ICON_GITHUB7=""
+TASK_ICON_GITHUB8=""
+TASK_ICON_TERMINAL2=""
+TASK_ICON_VIM=""
+TASK_ICON_SUBLIME=""
+ICON_BATT_FULL=""
+ICON_BATT_LOW=""
+ICON_BATT_HALF=""
+ICON_BATT_LOW=""
+ICON_BATT_EMPTY=""
+TASK_ICON_SPACING="  "
+
+tree=$(bspc query -T --desktop "$1")
+
+case $tree in
+    *"Krita"*)
+        echo -e "$TASK_ICON_BRUSH"
+        ;;
+    *"Firefox"*)
+        echo -e "$TASK_ICON_FIREFOX"
+        ;;
+    *" - YouTube - "*)
+        echo -e "$TASK_ICON_CHROME"
+        ;;
+    *"chromium"*)
+        echo -e "$TASK_ICON_CHROME"
+        ;;
+    *"chrome"*)
+        echo -e "$TASK_ICON_CHROME"
+        ;;
+    *"Vlc"*)
+        echo -e "$TASK_ICON_VIDEO"
+        ;;
+    *"Flashplayer"*)
+        echo -e "$TASK_ICON_DOCUMENT" # FIX THIS
+        ;;
+    *"\"className\":\"S\""*)
+        echo -e "$TASK_ICON_DOCUMENT"
+        ;;
+    *"\"className\":\"Subl"*)
+        echo -e "$TASK_ICON_DOCUMENT"
+        ;;
+    *"Music"*)
+        echo -e "$TASK_ICON_MUSIC"
+        ;;
+    *"Tomahawk"*)
+        echo -e "$TASK_ICON_TOMAHAWK"
+        ;;
+    *"termite"*)
+        echo -e "$TASK_ICON_TERMINAL2"
+        ;;
+    *"xterm"*)
+        echo -e "$TASK_ICON_TERMINAL2"
+        ;;
+    *"terminator"*)
+        echo -e "$TASK_ICON_TERMINAL2"
+        ;;
+    *"Steam"*)
+        echo -e "$TASK_ICON_STEAM2"
+        ;;
+    *"Deluge"*)
+        echo -e "$TASK_ICON_DELUGE"
+        ;;
+    *"Thunar"*)
+        echo -e "$TASK_ICON_FOLDER_OPEN"
+        ;;
+    *"Lxappearance"*)
+        echo -e "$TASK_ICON_PALETTE"
+        ;;
+    *)
+        echo -e "$TASK_ICON_SOLID"
+        ;;
+esac
