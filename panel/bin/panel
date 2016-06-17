@@ -122,27 +122,28 @@ done > "$PANEL_FIFO" &
 #     echo "B$batt_status"
 #     sleep $REFRESH_BATTERY
 # done > "$PANEL_FIFO" &
- 
-BAT="/sys/class/power_supply/BAT0"
-while true; do
-   CHARGE_NOW=`cat $BAT/charge_now`
-   CHARGE_FULL=`cat $BAT/charge_full`
-   # PERCENT=`echo "($CHARGE_NOW * 100)/$CHARGE_FULL" | bc`
-   batt=`echo "($CHARGE_NOW * 100)/$CHARGE_FULL" | bc`
-   # STATUS=`cat $BAT/status`
+if [ $HOSTNAME == "laptopArch" ]; then
+    BAT="/sys/class/power_supply/BAT0"
+    while true; do
+        CHARGE_NOW=`cat $BAT/charge_now`
+        CHARGE_FULL=`cat $BAT/charge_full`
+        # PERCENT=`echo "($CHARGE_NOW * 100)/$CHARGE_FULL" | bc`
+        batt=`echo "($CHARGE_NOW * 100)/$CHARGE_FULL" | bc`
+        # STATUS=`cat $BAT/status`
 
-   # if [ $STATUS == "Charging" ]; then
-   #     STATUS="+"
-   # elif [ $STATUS == "Discharging" ]; then
-   #     STATUS="-"
-   # else
-   #     STATUS=""
-   # fi
+        # if [ $STATUS == "Charging" ]; then
+        #     STATUS="+"
+        # elif [ $STATUS == "Discharging" ]; then
+        #     STATUS="-"
+        # else
+        #     STATUS=""
+        # fi
 
-   # echo "B$STATUS$PERCENT"
-   echo "B$batt"
-   sleep 5
-done > "$PANEL_FIFO" &
+        # echo "B$STATUS$PERCENT"
+        echo "B$batt"
+        sleep 5
+    done > "$PANEL_FIFO" &
+fi
 
 #. panel_colors
 # COLOR_BLACK="#000000"
@@ -177,6 +178,6 @@ COLOR_PANEL_BG="#151515"
 # COLOR_TITLE_BG="#004499"
 # COLOR_CLOCK_BG="#004499"
 
-cat "$PANEL_FIFO" | panel_bar | lemonbar -d -n "$PANEL_WM_NAME" -g x$PANEL_HEIGHT -f "$PANEL_FONT1" -f "$PANEL_FONT2" -f "$PANEL_ICON_FONT" -F "$COLOR_FG" -B "$COLOR_PANEL_BG" -a 32 | sh &
+cat "$PANEL_FIFO" | panel_bar | lemonbar -d -n "$PANEL_WM_NAME" -g x$PANEL_HEIGHT -f "$PANEL_FONT1" -f "$PANEL_FONT2" -f "$PANEL_ICON_FONT" -F "$COLOR_FG" -B "$COLOR_PANEL_BG" -a 32 -o 1 | sh &
 
 wait

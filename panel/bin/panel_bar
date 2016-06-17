@@ -1,7 +1,7 @@
 #! /bin/sh
 
 #. panel_icons
-TASK_ICON_SPACING="  "
+TASK_ICON_SPACING=" "
 ICON_BATT_FULL=""
 ICON_BATT_LOW=""
 ICON_BATT_HALF=""
@@ -60,7 +60,7 @@ COLOR_TITLE_FG='#FF000000'
 num_mon=$(bspc query -M | wc -l)
 
 desktop_icons=("$TASK_ICON_SPACING" "$TASK_ICON_SPACING" "$TASK_ICON_SPACING" "$TASK_ICON_SPACING" "$TASK_ICON_SPACING" "$TASK_ICON_SPACING" "$TASK_ICON_SPACING" "$TASK_ICON_SPACING" "$TASK_ICON_SPACING" "$TASK_ICON_SPACING")
-desktop_colors=("$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG")
+desktop_colors=("$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG" "$COLOR_PANEL_BG")
 color_vol_bg="$COLOR_VOL_BG"
 color_batt_bg="$COLOR_BATT_HIGH_BG"
 color_batt_fg="$COLOR_FG"
@@ -106,7 +106,11 @@ while read -r line ; do
         V*)
             # volume
             vol_value="${line#?}"
-            vol_state=$(amixer get Master | grep 'Mono: Playback' | grep -o '\[on]')
+            if [ "$HOSTNAME" == "desktopArch" ]; then
+                vol_state=$(amixer get Master | grep 'Front Left: Playback' | grep -o '\[on]')
+            elif [ "$HOSTNAME" == "laptopArch" ]; then
+                vol_state=$(amixer get Master | grep 'Mono: Playback' | grep -o '\[on]')
+            fi
             if [ $vol_state ]; then
                 color_vol_bg="$COLOR_VOL_BG"
                 color_vol_fg="$COLOR_FG"
@@ -125,7 +129,8 @@ while read -r line ; do
             ;;
         W*)
             # bspwm internal state
-            wm_infos=""
+            wm_infos1=""
+            wm_infos2=""
             IFS=':'
             set -- ${line#?}
             while [ $# -gt 0 ] ; do
@@ -191,7 +196,29 @@ while read -r line ; do
                 esac
                 shift
             done
-            wm_infos="%{A2:bspc desktop -f prev:}%{A1:bspc desktop -f 1:}%{B${desktop_colors[0]}}%{F$COLOR_FG}  ${desktop_icons[0]} %{F-}%{B-}\
+            if [ "$HOSTNAME" == "desktopArch" ]; then
+                wm_infos1="%{A1:bspc desktop -f 1:}%{B${desktop_colors[0]}}%{F$COLOR_FG}  ${desktop_icons[0]} %{F-}%{B-}\
+%{B${desktop_colors[1]}}%{F${desktop_colors[0]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 2:}%{F$COLOR_FG} ${desktop_icons[1]} %{F-}%{B-}\
+%{B${desktop_colors[2]}}%{F${desktop_colors[1]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 3:}%{F$COLOR_FG} ${desktop_icons[2]} %{F-}%{B-}\
+%{B${desktop_colors[3]}}%{F${desktop_colors[2]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 4:}%{F$COLOR_FG} ${desktop_icons[3]} %{F-}%{B-}\
+%{B${desktop_colors[4]}}%{F${desktop_colors[3]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 5:}%{F$COLOR_FG} ${desktop_icons[4]} %{F-}%{B-}\
+%{B$COLOR_PANEL_BG}%{F${desktop_colors[4]}}$ICON_ARROW_R%{F-}%{B-}%{A}"
+                wm_infos2="%{A1:bspc desktop -f 6:}%{B${desktop_colors[5]}}%{F$COLOR_FG}  ${desktop_icons[5]} %{F-}%{B-}\
+%{B${desktop_colors[6]}}%{F${desktop_colors[5]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 7:}%{F$COLOR_FG} ${desktop_icons[6]} %{F-}%{B-}\
+%{B${desktop_colors[7]}}%{F${desktop_colors[6]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 8:}%{F$COLOR_FG} ${desktop_icons[7]} %{F-}%{B-}\
+%{B${desktop_colors[8]}}%{F${desktop_colors[7]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 9:}%{F$COLOR_FG} ${desktop_icons[8]} %{F-}%{B-}\
+%{B${desktop_colors[9]}}%{F${desktop_colors[8]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 10:}%{F$COLOR_FG} ${desktop_icons[9]} %{F-}%{B-}\
+%{B$COLOR_PANEL_BG}%{F${desktop_colors[9]}}$ICON_ARROW_R%{F-}%{B-}%{A}"
+            elif [ "$HOSTNAME" == "laptopArch" ]; then
+                wm_infos1="%{A1:bspc desktop -f 1:}%{B${desktop_colors[0]}}%{F$COLOR_FG}  ${desktop_icons[0]} %{F-}%{B-}\
 %{B${desktop_colors[1]}}%{F${desktop_colors[0]}}$ICON_ARROW_R%{F-}%{A}\
 %{A1:bspc desktop -f 2:}%{F$COLOR_FG} ${desktop_icons[1]} %{F-}%{B-}\
 %{B${desktop_colors[2]}}%{F${desktop_colors[1]}}$ICON_ARROW_R%{F-}%{A}\
@@ -212,10 +239,24 @@ while read -r line ; do
 %{A1:bspc desktop -f 10:}%{F$COLOR_FG} ${desktop_icons[9]} %{F-}%{B-}\
 %{B${desktop_colors[10]}}%{F${desktop_colors[9]}}$ICON_ARROW_R%{F-}%{A}\
 %{A1:bspc desktop -f 11:}%{F$COLOR_FG} ${desktop_icons[10]} %{F-}%{B-}\
-%{B$COLOR_PANEL_BG}%{F${desktop_colors[10]}}$ICON_ARROW_R%{F-}%{B-}%{A}%{A}"
+%{B$COLOR_PANEL_BG}%{F${desktop_colors[10]}}$ICON_ARROW_R%{F-}%{B-}%{A}"
+            fi
             ;;
     esac
-    echo -e "%{l}${wm_infos}\
+    if [ "$HOSTNAME" == "desktopArch" ]; then
+        echo -e "%{l}${wm_infos2}\
+%{c}%{F$COLOR_TITLE_BG}$ICON_ARROW_L%{F-}%{B$COLOR_TITLE_BG}%{F$COLOR_TITLE_FG} ${title} %{F-}%{B-}%{F$COLOR_TITLE_BG}$ICON_ARROW_R%{F-}\
+%{r}%{F${COLOR_CLOCK_BG}}$ICON_ARROW_L%{F-}\
+%{B${COLOR_CLOCK_BG}}%{F${COLOR_FG}} ${time_date} %{F-}%{B-}\
+%{S+}%{l}${wm_infos1}\
+%{c}%{F$COLOR_TITLE_BG}$ICON_ARROW_L%{F-}%{B$COLOR_TITLE_BG}%{F$COLOR_TITLE_FG} ${title} %{F-}%{B-}%{F$COLOR_TITLE_BG}$ICON_ARROW_R%{F-}\
+%{r}%{A1:pavucontrol:}%{A3:myvolumetoggle:}%{A4:myvolumeup:}%{A5:myvolumedown:}\
+%{F${color_vol_bg}}$ICON_ARROW_L%{F-}\
+%{B${color_vol_bg}}%{F${color_vol_fg}}${volume} %{F-}%{A}%{A}%{A}%{A}\
+%{F${COLOR_CLOCK_BG}}$ICON_ARROW_L%{F-}%{B-}\
+%{B${COLOR_CLOCK_BG}}%{F${COLOR_FG}} ${time_date} %{F-}%{B-}"
+    elif [ "$HOSTNAME" == "laptopArch" ]; then
+        echo -e "%{l}${wm_infos1}\
 %{c}%{F$COLOR_TITLE_BG}$ICON_ARROW_L%{F-}%{B$COLOR_TITLE_BG}%{F$COLOR_TITLE_FG} ${title} %{F-}%{B-}%{F$COLOR_TITLE_BG}$ICON_ARROW_R%{F-}\
 %{r}%{A1:pavucontrol:}%{A3:myvolumetoggle:}%{A4:myvolumeup:}%{A5:myvolumedown:}\
 %{F${color_vol_bg}}$ICON_ARROW_L%{F-}\
@@ -224,4 +265,5 @@ while read -r line ; do
 %{B${color_batt_bg}}%{F${color_batt_fg}} ${BATT} %{F-}\
 %{F${COLOR_CLOCK_BG}}$ICON_ARROW_L%{F-}%{B-}\
 %{B${COLOR_CLOCK_BG}}%{F${COLOR_FG}} ${time_date} %{F-}%{B-}"
+    fi
 done

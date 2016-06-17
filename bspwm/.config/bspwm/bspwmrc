@@ -24,13 +24,16 @@ bspc config normal_frame_opacity 0.0
 bspc config focused_frame_opacity 0.1
 
 #bspc monitor LVDS-0 -d '1' '2' '3' '4' '5' '6' '7' '8' '9' '10'
-bspc monitor -d '1' '2' '3' '4' '5' '6' '7' '8' '9' '10'
-#bspc monitor -d I II III IV V VI VII VIII IX X
-#bspc monitor DVI-I-1 -n L
-#bspc monitor DP-5 -n R
-#bspc monitor L -s R
-#bspc monitor R -d '1' '2' '3' '4' '5'
-#bspc monitor L -d '6' '7' '8' '9' '10'
+if [ "$HOSTNAME" == "desktopArch" ]; then
+    bspc monitor -d I II III IV V VI VII VIII IX X
+    bspc monitor DVI-I-1 -n L
+    bspc monitor DP-5 -n R
+    bspc monitor L -s R
+    bspc monitor R -d '1' '2' '3' '4' '5'
+    bspc monitor L -d '6' '7' '8' '9' '10'
+elif [ "$HOSTNAME" == "laptopArch" ]; then
+    bspc monitor -d '1' '2' '3' '4' '5' '6' '7' '8' '9' '10'
+fi
 
 #desktop_config() {
 #    bspc config $1 $2
