@@ -237,9 +237,7 @@ while read -r line ; do
 %{A1:bspc desktop -f 9:}%{F$COLOR_FG} ${desktop_icons[8]} %{F-}%{B-}\
 %{B${desktop_colors[9]}}%{F${desktop_colors[8]}}$ICON_ARROW_R%{F-}%{A}\
 %{A1:bspc desktop -f 10:}%{F$COLOR_FG} ${desktop_icons[9]} %{F-}%{B-}\
-%{B${desktop_colors[10]}}%{F${desktop_colors[9]}}$ICON_ARROW_R%{F-}%{A}\
-%{A1:bspc desktop -f 11:}%{F$COLOR_FG} ${desktop_icons[10]} %{F-}%{B-}\
-%{B$COLOR_PANEL_BG}%{F${desktop_colors[10]}}$ICON_ARROW_R%{F-}%{B-}%{A}"
+%{B$COLOR_PANEL_BG}%{F${desktop_colors[9]}}$ICON_ARROW_R%{F-}%{B-}%{A}"
             fi
             ;;
     esac

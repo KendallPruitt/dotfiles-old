@@ -3,24 +3,7 @@
 # . panel_config
 # . panel_icons
 
-PANEL_HEIGHT=15
-#PANEL_FONT="office code pro:size=9:weight=medium"
 
-#DejaVu Sans Mono for Powerline Nerd Font Complete.ttf
-PANEL_FONT1="DejaVuSansMonoforPowerline Nerd Font:size=9:weight=medium:style=book"
-#PANEL_ICON_FONT3="FontAwesome:size=11"
-PANEL_FONT2="mplus Nerd Font:size=10:weight=regular"
-PANEL_ICON_FONT="material icons:size=11"
-#PANEL_ICON_FONT1="icons:size=10:weight=bold"
-PANEL_WM_NAME=bspwm_panel
-#PANEL_FIFO=/tmp/pamel-fifo
-#PANEL_HEIGHT=30
-#PANEL_WM_NAME="lemonbar"
-#PANEL_FONT_FAMILY=-*-erusfont-medium-*-*-*-11-*-*-*-*-*-*-*
-#PANEL_ICON_FONT_FAMILY=-*-siji-medium-*-*-*-10-*-*-*-*-*-*-*
-#REFRESH_VOLUME=0.5
-#REFRESH_MUSIC=1
-REFRESH_BATTERY=10
 
 ##num_mon=$(bspc query -M | wc -l)
 #num_mon=$(xrandr | grep " connected" | wc -l)
@@ -123,6 +106,25 @@ done > "$PANEL_FIFO" &
 #     sleep $REFRESH_BATTERY
 # done > "$PANEL_FIFO" &
 if [ $HOSTNAME == "laptopArch" ]; then
+    PANEL_HEIGHT=15
+    #PANEL_FONT="office code pro:size=9:weight=medium"
+
+    #DejaVu Sans Mono for Powerline Nerd Font Complete.ttf
+    PANEL_FONT1="DejaVuSansMonoforPowerline Nerd Font:size=9:weight=medium:style=book"
+    #PANEL_ICON_FONT3="FontAwesome:size=11"
+    PANEL_FONT2="mplus Nerd Font:size=10:weight=regular"
+    PANEL_ICON_FONT="material icons:size=11"
+    #PANEL_ICON_FONT1="icons:size=10:weight=bold"
+    PANEL_WM_NAME=bspwm_panel
+    #PANEL_FIFO=/tmp/pamel-fifo
+    #PANEL_HEIGHT=30
+    #PANEL_WM_NAME="lemonbar"
+    #PANEL_FONT_FAMILY=-*-erusfont-medium-*-*-*-11-*-*-*-*-*-*-*
+    #PANEL_ICON_FONT_FAMILY=-*-siji-medium-*-*-*-10-*-*-*-*-*-*-*
+    #REFRESH_VOLUME=0.5
+    #REFRESH_MUSIC=1
+    REFRESH_BATTERY=10
+    offset=0
     BAT="/sys/class/power_supply/BAT0"
     while true; do
         CHARGE_NOW=`cat $BAT/charge_now`
@@ -143,6 +145,26 @@ if [ $HOSTNAME == "laptopArch" ]; then
         echo "B$batt"
         sleep 5
     done > "$PANEL_FIFO" &
+elif [ "$HOSTNAME" == "desktopArch" ]; then
+    PANEL_HEIGHT=15
+    #PANEL_FONT="office code pro:size=9:weight=medium"
+
+    #DejaVu Sans Mono for Powerline Nerd Font Complete.ttf
+    PANEL_FONT1="DejaVuSansMonoforPowerline Nerd Font:size=9:weight=medium:style=book"
+    #PANEL_ICON_FONT3="FontAwesome:size=11"
+    PANEL_FONT2="mplus Nerd Font:size=10:weight=regular"
+    PANEL_ICON_FONT="material icons:size=10"
+    #PANEL_ICON_FONT1="icons:size=10:weight=bold"
+    PANEL_WM_NAME=bspwm_panel
+    #PANEL_FIFO=/tmp/pamel-fifo
+    #PANEL_HEIGHT=30
+    #PANEL_WM_NAME="lemonbar"
+    #PANEL_FONT_FAMILY=-*-erusfont-medium-*-*-*-11-*-*-*-*-*-*-*
+    #PANEL_ICON_FONT_FAMILY=-*-siji-medium-*-*-*-10-*-*-*-*-*-*-*
+    #REFRESH_VOLUME=0.5
+    #REFRESH_MUSIC=1
+    REFRESH_BATTERY=10
+    offset=1
 fi
 
 #. panel_colors
@@ -178,6 +200,6 @@ COLOR_PANEL_BG="#151515"
 # COLOR_TITLE_BG="#004499"
 # COLOR_CLOCK_BG="#004499"
 
-cat "$PANEL_FIFO" | panel_bar | lemonbar -d -n "$PANEL_WM_NAME" -g x$PANEL_HEIGHT -f "$PANEL_FONT1" -f "$PANEL_FONT2" -f "$PANEL_ICON_FONT" -F "$COLOR_FG" -B "$COLOR_PANEL_BG" -a 32 -o 1 | sh &
+cat "$PANEL_FIFO" | panel_bar | lemonbar -d -n "$PANEL_WM_NAME" -g x$PANEL_HEIGHT -f "$PANEL_FONT1" -f "$PANEL_FONT2" -f "$PANEL_ICON_FONT" -F "$COLOR_FG" -B "$COLOR_PANEL_BG" -a 32 -o "$offset" | sh &
 
 wait
