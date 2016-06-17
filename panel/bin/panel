@@ -113,7 +113,7 @@ if [ $HOSTNAME == "laptopArch" ]; then
     PANEL_FONT1="DejaVuSansMonoforPowerline Nerd Font:size=9:weight=medium:style=book"
     #PANEL_ICON_FONT3="FontAwesome:size=11"
     PANEL_FONT2="mplus Nerd Font:size=10:weight=regular"
-    PANEL_ICON_FONT="material icons:size=11"
+    PANEL_ICON_FONT="material icons:size=10"
     #PANEL_ICON_FONT1="icons:size=10:weight=bold"
     PANEL_WM_NAME=bspwm_panel
     #PANEL_FIFO=/tmp/pamel-fifo
