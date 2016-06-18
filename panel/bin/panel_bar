@@ -206,12 +206,12 @@ while read -r line ; do
 %{A1:bspc desktop -f 4:}%{F$COLOR_FG} ${desktop_icons[3]} %{F-}%{B-}\
 %{B${desktop_colors[4]}}%{F${desktop_colors[3]}}$ICON_ARROW_R%{F-}%{A}\
 %{A1:bspc desktop -f 5:}%{F$COLOR_FG} ${desktop_icons[4]} %{F-}%{B-}\
-%{B$COLOR_PANEL_BG}%{F${desktop_colors[4]}}$ICON_ARROW_R%{F-}%{B-}%{A}"
-                wm_infos2="%{A1:bspc desktop -f 6:}%{B${desktop_colors[5]}}%{F$COLOR_FG}  ${desktop_icons[5]} %{F-}%{B-}\
+%{B${desktop_colors[5]}}%{F${desktop_colors[4]}}$ICON_ARROW_R%{F-}%{A}\
+%{A1:bspc desktop -f 6:}%{F$COLOR_FG} ${desktop_icons[5]} %{F-}%{B-}\
 %{B${desktop_colors[6]}}%{F${desktop_colors[5]}}$ICON_ARROW_R%{F-}%{A}\
 %{A1:bspc desktop -f 7:}%{F$COLOR_FG} ${desktop_icons[6]} %{F-}%{B-}\
-%{B${desktop_colors[7]}}%{F${desktop_colors[6]}}$ICON_ARROW_R%{F-}%{A}\
-%{A1:bspc desktop -f 8:}%{F$COLOR_FG} ${desktop_icons[7]} %{F-}%{B-}\
+%{B$COLOR_PANEL_BG}%{F${desktop_colors[6]}}$ICON_ARROW_R%{F-}%{B-}%{A}"
+                wm_infos2="%{A1:bspc desktop -f 8:}%{B${desktop_colors[7]}}%{F$COLOR_FG}  ${desktop_icons[7]} %{F-}%{B-}\
 %{B${desktop_colors[8]}}%{F${desktop_colors[7]}}$ICON_ARROW_R%{F-}%{A}\
 %{A1:bspc desktop -f 9:}%{F$COLOR_FG} ${desktop_icons[8]} %{F-}%{B-}\
 %{B${desktop_colors[9]}}%{F${desktop_colors[8]}}$ICON_ARROW_R%{F-}%{A}\
