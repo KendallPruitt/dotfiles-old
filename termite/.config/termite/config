@@ -9,8 +9,8 @@ foreground        = #ffffff
 foreground_bold   = #ffffff
 cursor            = #ffffff
 cursor_foreground = #ffffff
-background        = rgba(0, 0, 0, 0.8)
-active_background = rgba(0, 0, 100, 0.8)
+background        = rgba(0, 0, 0, 0.988)
+active_background = rgba(0, 0, 100, 0.988)
 active_foreground = #ffffff
 
 # black
