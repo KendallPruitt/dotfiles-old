@@ -76,7 +76,23 @@ while read -r line ; do
             ;;
         T*)
             # xtitle output
-            title="${line#?}"
+            vimstr="vim  "
+            title_raw="${line#?}"
+            if [[ "$title_raw" == *" - Mozilla Firefox" ]]; then
+                title_raw=${title_raw%$" - Mozilla Firefox"}
+            elif [[ "$title_raw" == *" - Google Chrome" ]]; then
+                title_raw=${title_raw%$" - Google Chrome"}
+            elif [[ "$title_raw" == *" - Chromium" ]]; then
+                title_raw=${title_raw%$" - Chromium"}
+            elif [[ "$title_raw" == $vimstr* ]]; then
+                title_raw=""${title_raw#$"vim "}
+            fi
+            if [[ "$title_raw" == *" - YouTube" ]]; then
+                title_raw=" "${title_raw%$" - YouTube"}
+            elif [[ "$title_raw" == *"/home/kendall" ]]; then
+                title_raw=${title_raw%$"/home/kendall"}""
+            fi
+            title="${title_raw}"
             ;;
         B*)
             # battery output

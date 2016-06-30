@@ -55,9 +55,6 @@ case $tree in
     *"Firefox"*)
         echo -e "$TASK_ICON_FIREFOX"
         ;;
-    *" - YouTube - "*)
-        echo -e "$TASK_ICON_CHROME"
-        ;;
     *"chromium"*)
         echo -e "$TASK_ICON_CHROME"
         ;;
@@ -85,12 +82,12 @@ case $tree in
     *"termite"*)
         echo -e "$TASK_ICON_TERMINAL2"
         ;;
-    *"xterm"*)
-        echo -e "$TASK_ICON_TERMINAL2"
-        ;;
-    *"terminator"*)
-        echo -e "$TASK_ICON_TERMINAL2"
-        ;;
+    # *"xterm"*)
+    #     echo -e "$TASK_ICON_TERMINAL2"
+    #     ;;
+    # *"terminator"*)
+    #     echo -e "$TASK_ICON_TERMINAL2"
+    #     ;;
     *"Steam"*)
         echo -e "$TASK_ICON_STEAM2"
         ;;
