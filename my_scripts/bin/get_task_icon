@@ -17,8 +17,6 @@ TASK_ICON_FOLDER1=""
 TASK_ICON_FOLDER2=""
 TASK_ICON_PALETTE=""
 TASK_ICON_SOLID=""
-TASK_ICON_EMPTY=""
-TASK_ICON_SPACING="  "
 TASK_ICON_HOME=""
 TASK_ICON_DOWNLOADS=""
 TASK_ICON_FOLDER_OPEN=""
@@ -68,10 +66,10 @@ case $tree in
         echo -e "$TASK_ICON_DOCUMENT" # FIX THIS
         ;;
     *"\"className\":\"S\""*)
-        echo -e "$TASK_ICON_DOCUMENT"
+        echo -e "%{T3}$TASK_ICON_SUBLIME%{T-}"
         ;;
     *"\"className\":\"Subl"*)
-        echo -e "$TASK_ICON_DOCUMENT"
+        echo -e "%{T3}$TASK_ICON_SUBLIME%{T-}"
         ;;
     *"Music"*)
         echo -e "$TASK_ICON_MUSIC"
@@ -80,7 +78,7 @@ case $tree in
         echo -e "$TASK_ICON_TOMAHAWK"
         ;;
     *"termite"*)
-        echo -e "$TASK_ICON_TERMINAL2"
+        echo -e "%{T3}$TASK_ICON_TERMINAL1%{T-}"
         ;;
     # *"xterm"*)
     #     echo -e "$TASK_ICON_TERMINAL2"

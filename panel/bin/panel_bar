@@ -3,7 +3,7 @@
 #. panel_icons
 TASK_ICON_SPACING=" "
 ICON_BATT_FULL=""
-ICON_BATT_LOW=""
+ICON_BATT_HIGH=""
 ICON_BATT_HALF=""
 ICON_BATT_LOW=""
 ICON_BATT_EMPTY=""
@@ -72,7 +72,7 @@ while read -r line ; do
             ;;
         S*)
             # clock output
-            time_date="${line#?}"
+            time_date="%{T2}${line#?}%{T-}"
             ;;
         T*)
             # xtitle output
@@ -84,37 +84,43 @@ while read -r line ; do
                 title_raw=${title_raw%$" - Google Chrome"}
             elif [[ "$title_raw" == *" - Chromium" ]]; then
                 title_raw=${title_raw%$" - Chromium"}
+            elif [[ "$title_raw" == *" - Sublime Text (UNREGISTERED)" ]]; then
+                title_raw="%{T3}%{T-} "${title_raw%$" - Sublime Text (UNREGISTERED)"}
             elif [[ "$title_raw" == $vimstr* ]]; then
-                title_raw=""${title_raw#$"vim "}
+                title_raw="%{T3}%{T-}"${title_raw#$"vim "}
             fi
             if [[ "$title_raw" == *" - YouTube" ]]; then
                 title_raw=" "${title_raw%$" - YouTube"}
             elif [[ "$title_raw" == *"/home/kendall" ]]; then
                 title_raw=${title_raw%$"/home/kendall"}""
+            elif [[ "$title_raw" == *" /home/kendall/loads" ]]; then
+                title_raw=${title_raw%$"/home/kendall/loads"}""
+            elif [[ "$title_raw" == *" /home/kendall/box" ]]; then
+                title_raw=${title_raw%$"/home/kendall/box"}"%{T3}%{T-}"
             fi
-            title="${title_raw}"
+            title="%{T2}${title_raw}%{T-}"
             ;;
         B*)
             # battery output
             BATT=${line#?}
             if [ "${BATT}" -ge 90 ]; then
-                BATT="$ICON_BATT_FULL$BATT"
+                BATT="$ICON_BATT_FULL%{T2}$BATT%{T-}"
                 color_batt_bg="$COLOR_BATT_HIGH_BG"
                 color_batt_fg="$COLOR_FG"
             elif [ "${BATT}" -ge 65 ]; then
-                BATT="$ICON_BATT_HIGH$BATT"
+                BATT="$ICON_BATT_HIGH%{T2}$BATT%{T-}"
                 color_batt_bg="$COLOR_BATT_HIGH_BG"
                 color_batt_fg="$COLOR_FG"
             elif [ "${BATT}" -ge 35 ]; then
-                BATT="$ICON_BATT_HALF$BATT"
+                BATT="$ICON_BATT_HALF%{T2}$BATT%{T-}"
                 color_batt_bg="$COLOR_BATT_MED_BG"
                 color_batt_fg="$COLOR_FG"
             elif [ "${BATT}" -ge 10 ]; then
-                BATT="$ICON_BATT_LOW$BATT"
+                BATT="$ICON_BATT_LOW%{T2}$BATT%{T-}"
                 color_batt_bg="$COLOR_BATT_LOW_BG"
                 color_batt_fg="$COLOR_BATT_LOW_FG"
             else
-                BATT="$ICON_BATT_EMPTY$BATT"
+                BATT="$ICON_BATT_EMPTY%{T2}$BATT%{T-}"
                 color_batt_bg="$COLOR_BATT_LOW_BG"
                 color_batt_fg="$COLOR_BATT_LOW_FG"
             fi
@@ -131,16 +137,16 @@ while read -r line ; do
                 color_vol_bg="$COLOR_VOL_BG"
                 color_vol_fg="$COLOR_FG"
                 if [ "${vol_value}" -ge 70 ]; then
-                    volume="$ICON_VOL_HIGH$vol_value"
+                    volume="$ICON_VOL_HIGH%{T2}$vol_value%{T-}"
                 elif [ "${vol_value}" -gt 0 ]; then
-                    volume="$ICON_VOL_LOW$vol_value"
+                    volume="$ICON_VOL_LOW%{T2}$vol_value%{T-}"
                 else
-                    volume="$ICON_VOL_OFF$vol_value"
+                    volume="$ICON_VOL_OFF%{T2}$vol_value%{T-}"
                 fi
             else
                 color_vol_bg="$COLOR_VOL_MUTE_BG"
                 color_vol_fg="$COLOR_VOL_MUTE_FG"
-                volume="$ICON_VOL_MUTE$vol_value"
+                volume="$ICON_VOL_MUTE%{T2}$vol_value%{T-}"
             fi
             ;;
         W*)
@@ -258,23 +264,23 @@ while read -r line ; do
             ;;
     esac
     if [ "$HOSTNAME" == "desktopArch" ]; then
-        echo -e "%{l}${wm_infos2}\
-%{c}%{F$COLOR_TITLE_BG}$ICON_ARROW_L%{F-}%{B$COLOR_TITLE_BG}%{F$COLOR_TITLE_FG} ${title} %{F-}%{B-}%{F$COLOR_TITLE_BG}$ICON_ARROW_R%{F-}\
+        echo -e "%{c}%{F$COLOR_TITLE_BG}$ICON_ARROW_L%{F-}%{B$COLOR_TITLE_BG}%{F$COLOR_TITLE_FG} ${title} %{F-}%{B-}%{F$COLOR_TITLE_BG}$ICON_ARROW_R%{F-}\
+%{l}${wm_infos2}\
 %{r}%{F${COLOR_CLOCK_BG}}$ICON_ARROW_L%{F-}\
 %{B${COLOR_CLOCK_BG}}%{F${COLOR_FG}} ${time_date} %{F-}%{B-}\
-%{S+}%{l}${wm_infos1}\
-%{c}%{F$COLOR_TITLE_BG}$ICON_ARROW_L%{F-}%{B$COLOR_TITLE_BG}%{F$COLOR_TITLE_FG} ${title} %{F-}%{B-}%{F$COLOR_TITLE_BG}$ICON_ARROW_R%{F-}\
+%{S+}%{c}%{F$COLOR_TITLE_BG}$ICON_ARROW_L%{F-}%{B$COLOR_TITLE_BG}%{F$COLOR_TITLE_FG} ${title} %{F-}%{B-}%{F$COLOR_TITLE_BG}$ICON_ARROW_R%{F-}\
+%{l}${wm_infos1}\
 %{r}%{A1:pavucontrol:}%{A3:myvolumetoggle:}%{A4:myvolumeup:}%{A5:myvolumedown:}\
 %{F${color_vol_bg}}$ICON_ARROW_L%{F-}\
 %{B${color_vol_bg}}%{F${color_vol_fg}}${volume} %{F-}%{A}%{A}%{A}%{A}\
 %{F${COLOR_CLOCK_BG}}$ICON_ARROW_L%{F-}%{B-}\
 %{B${COLOR_CLOCK_BG}}%{F${COLOR_FG}} ${time_date} %{F-}%{B-}"
     elif [ "$HOSTNAME" == "laptopArch" ]; then
-        echo -e "%{l}${wm_infos1}\
-%{c}%{F$COLOR_TITLE_BG}$ICON_ARROW_L%{F-}%{B$COLOR_TITLE_BG}%{F$COLOR_TITLE_FG} ${title} %{F-}%{B-}%{F$COLOR_TITLE_BG}$ICON_ARROW_R%{F-}\
+        echo -e "%{c}%{F$COLOR_TITLE_BG}$ICON_ARROW_L%{F-}%{B$COLOR_TITLE_BG}%{F$COLOR_TITLE_FG} ${title} %{F-}%{B-}%{F$COLOR_TITLE_BG}$ICON_ARROW_R%{F-}\
+%{l}${wm_infos1}\
 %{r}%{A1:pavucontrol:}%{A3:myvolumetoggle:}%{A4:myvolumeup:}%{A5:myvolumedown:}\
 %{F${color_vol_bg}}$ICON_ARROW_L%{F-}\
-%{B${color_vol_bg}}%{F${color_vol_fg}}${volume} %{F-}%{A}%{A}%{A}%{A}\
+%{B${color_vol_bg}}%{F${color_vol_fg}}%{O2}${volume} %{F-}%{A}%{A}%{A}%{A}\
 %{F${color_batt_bg}}$ICON_ARROW_L%{F-}%{B-}\
 %{B${color_batt_bg}}%{F${color_batt_fg}} ${BATT} %{F-}\
 %{F${COLOR_CLOCK_BG}}$ICON_ARROW_L%{F-}%{B-}\

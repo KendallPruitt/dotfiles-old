@@ -17,6 +17,13 @@ super + space
 super + Escape
     pkill -USR1 -x sxhkd
 
+###
+### tdrop
+###
+
+### 
+alt + space
+    tdrop -a -w 1440 -h 435 -y 20 -s dropdown termite
 
 ###
 ### multimedia keys
@@ -204,9 +211,9 @@ super + {Left,Down,Up,Right}
 #    bspc pointer -u
 
 # old start move/resize
-super + button{1-3}
-   ; bspc pointer -g {move,resize_side,resize_corner}
+#super + button{1-3}
+#   ; bspc pointer -g {move,resize_side,resize_corner}
 
 # old end move/resize
-super + @button{1-3}
-   bspc pointer -u
+#super + @button{1-3}
+#   bspc pointer -u

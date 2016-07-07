@@ -8,7 +8,6 @@ bspc config external_rules_command "$(which external_rules)"
 bspc config border_width                1
 bspc config window_gap                  0
 
-bspc config pointer_modifier            mod4
 bspc config split_ratio                 0.50
 bspc config borderless_monocle          true
 bspc config gapless_monocle             true
@@ -23,6 +22,8 @@ bspc config urgent_border_color         "#D75B00" # FF5500
 bspc config focused_locked_border_color "#00FFFF"
 bspc config normal_frame_opacity        0.0
 bspc config focused_frame_opacity       0.1
+
+bspc config pointer_modifier    mod4
 
 #bspc monitor LVDS-0 -d '1' '2' '3' '4' '5' '6' '7' '8' '9' '10'
 if [ "$HOSTNAME" == "desktopArch" ]; then

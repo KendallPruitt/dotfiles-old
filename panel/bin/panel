@@ -111,9 +111,10 @@ if [ $HOSTNAME == "laptopArch" ]; then
 
     #DejaVu Sans Mono for Powerline Nerd Font Complete.ttf
     PANEL_FONT1="DejaVuSansMonoforPowerline Nerd Font:size=9:weight=medium:style=book"
+    PANEL_FONT2="office code pro:size=9:weight=medium"
+    PANEL_FONT3="mplus Nerd Font:size=11:weight=regular"
     #PANEL_ICON_FONT3="FontAwesome:size=11"
-    PANEL_FONT2="mplus Nerd Font:size=10:weight=regular"
-    PANEL_ICON_FONT="material icons:size=10"
+    PANEL_ICON_FONT="material icons:size=12"
     #PANEL_ICON_FONT1="icons:size=10:weight=bold"
     PANEL_WM_NAME=bspwm_panel
     #PANEL_FIFO=/tmp/pamel-fifo
@@ -124,7 +125,10 @@ if [ $HOSTNAME == "laptopArch" ]; then
     #REFRESH_VOLUME=0.5
     #REFRESH_MUSIC=1
     REFRESH_BATTERY=10
-    offset=0
+    offset1=-1
+    offset2=0
+    offset3=3
+    offset4=1
     BAT="/sys/class/power_supply/BAT0"
     while true; do
         CHARGE_NOW=`cat $BAT/charge_now`
@@ -164,7 +168,10 @@ elif [ "$HOSTNAME" == "desktopArch" ]; then
     #REFRESH_VOLUME=0.5
     #REFRESH_MUSIC=1
     REFRESH_BATTERY=10
-    offset=1
+    offset1=1
+    offset2=0
+    offset3=0
+    offset4=0
 fi
 
 #. panel_colors
@@ -200,6 +207,6 @@ COLOR_PANEL_BG="#151515"
 # COLOR_TITLE_BG="#004499"
 # COLOR_CLOCK_BG="#004499"
 
-cat "$PANEL_FIFO" | panel_bar | lemonbar -d -n "$PANEL_WM_NAME" -g x$PANEL_HEIGHT -f "$PANEL_FONT1" -f "$PANEL_FONT2" -f "$PANEL_ICON_FONT" -F "$COLOR_FG" -B "$COLOR_PANEL_BG" -a 32 -o "$offset" | sh &
+cat "$PANEL_FIFO" | panel_bar | lemonbar -d -n "$PANEL_WM_NAME" -g x$PANEL_HEIGHT -f "$PANEL_FONT1" -f "$PANEL_FONT2" -f "$PANEL_FONT3" -f "$PANEL_ICON_FONT" -F "$COLOR_FG" -B "$COLOR_PANEL_BG" -a 32 -o "$offset1" -o "$offset2" -o "$offset3" -o "$offset4" | sh &
 
 wait
