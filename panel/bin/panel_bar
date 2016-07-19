@@ -1,7 +1,7 @@
 #! /bin/sh
 
 #. panel_icons
-TASK_ICON_SPACING=" "
+TASK_ICON_SPACING="  "
 ICON_BATT_FULL=""
 ICON_BATT_HIGH=""
 ICON_BATT_HALF=""
@@ -92,7 +92,7 @@ while read -r line ; do
             if [[ "$title_raw" == *" - YouTube" ]]; then
                 title_raw=" "${title_raw%$" - YouTube"}
             elif [[ "$title_raw" == *"/home/kendall" ]]; then
-                title_raw=${title_raw%$"/home/kendall"}""
+                title_raw=${title_raw%$"/home/kendall"}"%{T2}%{T-}"
             elif [[ "$title_raw" == *" /home/kendall/loads" ]]; then
                 title_raw=${title_raw%$"/home/kendall/loads"}""
             elif [[ "$title_raw" == *" /home/kendall/box" ]]; then

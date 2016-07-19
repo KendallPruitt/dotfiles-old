@@ -54,10 +54,10 @@ case $tree in
         echo -e "$TASK_ICON_FIREFOX"
         ;;
     *"chromium"*)
-        echo -e "$TASK_ICON_CHROME"
+        echo -e "%{T2}$TASK_ICON_CHROME%{T-}"
         ;;
     *"chrome"*)
-        echo -e "$TASK_ICON_CHROME"
+        echo -e "%{T3}$TASK_ICON_CHROME%{T-}"
         ;;
     *"Vlc"*)
         echo -e "$TASK_ICON_VIDEO"
