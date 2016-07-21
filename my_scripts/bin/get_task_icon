@@ -57,7 +57,7 @@ case $tree in
         echo -e "%{T2}$TASK_ICON_CHROME%{T-}"
         ;;
     *"chrome"*)
-        echo -e "%{T3}$TASK_ICON_CHROME%{T-}"
+        echo -e "$TASK_ICON_CHROME"
         ;;
     *"Vlc"*)
         echo -e "$TASK_ICON_VIDEO"
