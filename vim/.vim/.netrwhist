@@ -1,8 +1,10 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_cnt =8
 let g:netrw_dirhist_1='/home/kendall/.config'
 let g:netrw_dirhist_2='/etc/profile.d'
 let g:netrw_dirhist_3='/etc/systemd'
 let g:netrw_dirhist_4='/home/kendall/.config/fish'
 let g:netrw_dirhist_5='/home/kendall/dotfiles/panel'
 let g:netrw_dirhist_6='/home/kendall/.config/sxhkd'
+let g:netrw_dirhist_7='/home/kendall/docs'
+let g:netrw_dirhist_8='/usr/lib/modprobe.d'

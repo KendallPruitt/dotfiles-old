@@ -111,7 +111,7 @@ if [ $HOSTNAME == "laptopArch" ]; then
 
     #DejaVu Sans Mono for Powerline Nerd Font Complete.ttf
     PANEL_FONT1="DejaVuSansMonoforPowerline Nerd Font:size=9:weight=medium:style=book"
-    PANEL_FONT2="office code pro:size=9:weight=medium"
+    PANEL_FONT2="office code pro:size=10:weight=medium"
     PANEL_FONT3="mplus Nerd Font:size=11:weight=regular"
     #PANEL_ICON_FONT3="FontAwesome:size=11"
     PANEL_FONT4="material icons:size=12"
@@ -127,8 +127,8 @@ if [ $HOSTNAME == "laptopArch" ]; then
     REFRESH_BATTERY=10
     offset1=-1
     offset2=0
-    offset3=3
-    offset4=1
+    offset3=1
+    offset4=0
     BAT="/sys/class/power_supply/BAT0"
     while true; do
         CHARGE_NOW=`cat $BAT/charge_now`
