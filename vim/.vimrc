@@ -156,4 +156,7 @@ map Y y$
 " next search
 nnoremap <C-L> :nohl<CR><C-L>
  
+ 
 "------------------------------------------------------------
+" My changes
+set updatetime=250
