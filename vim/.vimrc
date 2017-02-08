@@ -160,3 +160,18 @@ nnoremap <C-L> :nohl<CR><C-L>
 "------------------------------------------------------------
 " My changes
 set updatetime=250
+
+"------------------------------------------------------------
+" Vim Plug
+call plug#begin()
+Plug 'reedes/vim-pencil'
+Plug 'plasticboy/vim-markdown'
+Plug 'vim-airline/vim-airline'
+augroup pencil
+    autocmd!
+    autocmd FileType markdown,mkd call pencil#init()
+    autocmd FileType text         call pencil#init()
+augroup END
+
+call plug#end()
+let g:airline_powerline_fonts = 1

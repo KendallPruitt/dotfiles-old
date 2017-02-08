@@ -75,7 +75,7 @@ done > "$PANEL_FIFO" &
 # done
 
 # Volume
-`~/bin/myvolumeup` > "$PANEL_FIFO" &
+`~/bin/volumeadjust -u` > "$PANEL_FIFO" &
 # if (^) this doesn't work, try (v) this
 #$(~/bin/myvolumeup) > "$PANEL_FIFO" &
 

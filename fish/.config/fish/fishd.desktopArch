@@ -2,6 +2,7 @@
 # Do NOT edit it directly, your changes will be overwritten.
 SET __fish_classic_git_prompt_initialized:\x1d
 SET __fish_init_1_50_0:\x1d
+SET __fish_init_2_39_8:\x1d
 SET __fish_init_2_3_0:\x1d
 SET budspencer_colors:000000\x1e252525\x1e505050\x1effffff\x1e0070ff\x1ed75b00\x1ee50000\x1e990000\x1eff00a8\x1e008715\x1e00ffff\x1e00ff27
 SET budspencer_cursors:\x5c033\x5d12\x3b\x23008715\x5c007\x1e\x5c033\x5d12\x3b\x230070ff\x5c007\x1e\x5c033\x5d12\x3b\x23990000\x5c007\x1e\x5c033\x5d12\x3b\x23ff00a8\x5c007
@@ -26,6 +27,7 @@ SET fish_color_command:005fd7\x1epurple
 SET fish_color_comment:red
 SET fish_color_cwd:green
 SET fish_color_cwd_root:red
+SET fish_color_end:brmagenta
 SET fish_color_error:red\x1e\x2d\x2dbold
 SET fish_color_escape:cyan
 SET fish_color_history_current:cyan

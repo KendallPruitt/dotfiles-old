@@ -2,10 +2,33 @@
 ZSH=/usr/share/oh-my-zsh/
 export TERM="xterm-256color"
 
+# # dirstack
+#
+# DIRSTACKFILE="$HOME/.cache/zsh/dirs"
+# if [[ -f $DIRSTACKFILE ]] && [[ $#dirstack -eq 0 ]]; then
+#   dirstack=( ${(f)"$(< $DIRSTACKFILE)"} )
+#   [[ -d $dirstack[1] ]] && cd $dirstack[1]
+# fi
+# chpwd() {
+#   print -l $PWD ${(u)dirstack} >$DIRSTACKFILE
+# }
+#
+# DIRSTACKSIZE=20
+#
+# setopt AUTO_PUSHD PUSHD_SILENT PUSHD_TO_HOME
+#
+# ## Remove duplicate entries
+# setopt PUSHD_IGNORE_DUPS
+#
+# ## This reverts the +/- operators.
+# setopt PUSHD_MINUS
 
-DISABLE_UPDATE_PROMPT=true
 
 
+# DISABLE_UPDATE_PROMPT=true
+
+# set cursor color
+echo -ne "\033]12;#0070ff\007"
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -21,7 +44,7 @@ ZSH_THEME="powerlevel9k/powerlevel9k"
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
-DISABLE_AUTO_UPDATE="true"
+# DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
@@ -33,10 +56,10 @@ DISABLE_AUTO_UPDATE="true"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -93,11 +116,97 @@ export DEFAULT_USER="kendall"
 eval "$(thefuck --alias)"
 eval "$(thefuck --alias shit)"
 
+autoload -Uz run-help
+autoload -Uz run-help-git
+autoload -Uz run-help-ip
+autoload -Uz run-help-openssl
+autoload -Uz run-help-p4
+autoload -Uz run-help-sudo
+autoload -Uz run-help-svn
+autoload -Uz run-help-svk
+unalias run-help
+alias help=run-help
+autoload -Uz compinit
+compinit
 
+alias sup="su -c zsh"
+
+
+zstyle ':completion:*' rehash true
 
 ZSH_CACHE_DIR=$HOME/.oh-my-zsh-cache
 if [[ ! -d $ZSH_CACHE_DIR ]]; then
   mkdir $ZSH_CACHE_DIR
 fi
 
+source /usr/share/doc/pkgfile/command-not-found.zsh
+
 source $ZSH/oh-my-zsh.sh
+
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+zstyle ':completion:*' menu select
+setopt COMPLETE_ALIASES
+
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
+[[ -n "$key[Up]"   ]] && bindkey -- "$key[Up]"   up-line-or-beginning-search
+[[ -n "$key[Down]" ]] && bindkey -- "$key[Down]" down-line-or-beginning-search
+
+timer_show=0
+function preexec() {
+  timer=${timer:-$SECONDS}
+}
+
+function precmd() {
+  if [ $timer ]; then
+    timer_show=$(($SECONDS - $timer))
+    unset timer
+  fi
+}
+
+# custom_status() {
+#   if [[ "$RETVAL" -ne 0 ]]; then
+#     echo -n "$1_prompt_segment" "$0_ERROR" "$2" "001" "016" "$RETVAL" 'FAIL_ICON'
+#   fi
+#   # else
+#   #   "$1_prompt_segment" "$0" "$2" "000" "007" '%h'
+#   # fi
+# }
+#
+# POWERLEVEL9K_CUSTOM_STATUS="custom_status"
+POWERLEVEL9K_MY_STATUS_OK_FOREGROUND='016'
+POWERLEVEL9K_MY_STATUS_OK_BACKGROUND='012'
+POWERLEVEL9K_MY_STATUS_ERROR_FOREGROUND='015'
+POWERLEVEL9K_MY_STATUS_ERROR_BACKGROUND='009'
+POWERLEVEL9K_MY_TIME_FOREGROUND='010'
+POWERLEVEL9K_MY_TIME_BACKGROUND='000'
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon context rbenv vcs root_indicator background_jobs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(dir my_time my_status)
+POWERLEVEL9K_STATUS_VERBOSE=false
+POWERLEVEL9K_DIR_HOME_BACKGROUND='012'
+POWERLEVEL9K_DIR_HOME_FOREGROUND='016'
+POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND='012'
+POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND='016'
+POWERLEVEL9K_DIR_DEFAULT_BACKGROUND='004'
+POWERLEVEL9K_DIR_DEFAULT_FOREGROUND='016'
+POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND='000'
+POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND='009'
+POWERLEVEL9K_STATUS_ERROR_BACKGROUND='001'
+POWERLEVEL9K_STATUS_ERROR_FOREGROUND='015'
+POWERLEVEL9K_OS_ICON_BACKGROUND='012'
+POWERLEVEL9K_OS_ICON_FOREGROUND='016'
+POWERLEVEL9K_TIME_BACKGROUND='012'
+POWERLEVEL9K_TIME_FOREGROUND='016'
+POWERLEVEL9K_HISTORY_BACKGROUND='000'
+POWERLEVEL9K_HISTORY_FOREGROUND='007'
+POWERLEVEL9K_VCS_BACKGROUND='002'
+POWERLEVEL9K_VCS_FOREGROUND='016'
+POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='003'
+POWERLEVEL9K_VCS_MODIFIED_FOREGROUND='016'
+POWERLEVEL9K_VCS_CLEAN_BACKGROUND='002'
+POWERLEVEL9K_VCS_CLEAN_FOREGROUND='016'
+POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='006'
+POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND='016'

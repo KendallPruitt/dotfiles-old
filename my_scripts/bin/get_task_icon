@@ -1,10 +1,12 @@
 #! /bin/sh
 
 #. panel_icons
+#
 TASK_ICON_BRUSH=""
 TASK_ICON_FIREFOX=""
 TASK_ICON_CHROME=""
-TASK_ICON_VIDEO=""
+#TASK_ICON_VIDEO=""
+TASK_ICON_VIDEO=""
 TASK_ICON_DOCUMENT=""
 TASK_ICON_MUSIC=""
 TASK_ICON_TOMAHAWK=""
@@ -22,6 +24,7 @@ TASK_ICON_DOWNLOADS=""
 TASK_ICON_FOLDER_OPEN=""
 TASK_ICON_PYTHON=""
 TASK_ICON_DROPBOX=""
+TASK_ICON_ATOM=""
 TASK_ICON_GITHUB1=""
 TASK_ICON_GITHUB2=""
 TASK_ICON_GITHUB3=""
@@ -43,12 +46,19 @@ ICON_BATT_HALF=""
 ICON_BATT_LOW=""
 ICON_BATT_EMPTY=""
 TASK_ICON_SPACING="  "
+TASK_ICON_BOX=""
 
 tree=$(bspc query -T --desktop "$1")
 
 case $tree in
+    *"VirtualBox"*)
+        echo -e "$TASK_ICON_BOX"
+        ;;
     *"Krita"*)
         echo -e "$TASK_ICON_BRUSH"
+        ;;
+    *"Atom"*)
+        echo -e "%{T3}$TASK_ICON_ATOM%{T-}"
         ;;
     *"Firefox"*)
         echo -e "$TASK_ICON_FIREFOX"
@@ -58,6 +68,9 @@ case $tree in
         ;;
     *"chrome"*)
         echo -e "$TASK_ICON_CHROME"
+        ;;
+    *"baka-mplayer"*)
+        echo -e "$TASK_ICON_VIDEO"
         ;;
     *"Vlc"*)
         echo -e "$TASK_ICON_VIDEO"
@@ -71,11 +84,14 @@ case $tree in
     *"\"className\":\"Subl"*)
         echo -e "%{T3}$TASK_ICON_SUBLIME%{T-}"
         ;;
-    *"Music"*)
-        echo -e "$TASK_ICON_MUSIC"
-        ;;
-    *"Tomahawk"*)
-        echo -e "$TASK_ICON_TOMAHAWK"
+    # *"Music"*)
+    #     echo -e "$TASK_ICON_MUSIC"
+    #     ;;
+    # *"Tomahawk"*)
+    #     echo -e "$TASK_ICON_TOMAHAWK"
+    #     ;;
+    *"Steam"*)
+        echo -e "$TASK_ICON_STEAM2"
         ;;
     *"termite"*)
         echo -e "%{T3}$TASK_ICON_TERMINAL1%{T-}"
@@ -86,9 +102,6 @@ case $tree in
     # *"terminator"*)
     #     echo -e "$TASK_ICON_TERMINAL2"
     #     ;;
-    *"Steam"*)
-        echo -e "$TASK_ICON_STEAM2"
-        ;;
     *"Deluge"*)
         echo -e "$TASK_ICON_DELUGE"
         ;;

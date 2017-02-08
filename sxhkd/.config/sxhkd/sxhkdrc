@@ -7,7 +7,7 @@
 
 # terminal emulator
 super + Return
-    termite -e fish
+    termite
 
 # program launcher
 super + space
@@ -55,7 +55,7 @@ XF86AudioMute
 ###
 
 ### horizontal scrolling
-shift + button{4,5}
+super + button{4,5}
     xdotool click {6,7}
 
 ### next/previous tab
@@ -65,8 +65,14 @@ super + button{8,9}
 #    xdotool key ctrl+Next
 
 ### desktop scrolling
-super + button{4,5}
-    bspc desktop -f {prev,next}
+#super + button{4,5}
+#    bspc desktop -f {prev,next}
+
+### move rocket league floating window to proper position
+super + shift + alt + ctrl + r
+    rlmovewindow
+#    xdotool getactivewindow windowmove 0 0
+#    xdo move -x -3882 -y -2
 
 
 #

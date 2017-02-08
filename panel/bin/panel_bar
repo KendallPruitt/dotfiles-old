@@ -23,6 +23,7 @@ COLOR_F_BLACK='#FF505050'
 COLOR_B_RED='#FF990000'
 COLOR_F_RED='#FFE50000'
 COLOR_B_GREEN='#FF008715'
+COLOR_M_GREEN='#FF00BD1D'
 COLOR_F_GREEN='#FF00FF27'
 COLOR_B_YELLOW='#FFD75B00'
 COLOR_F_YELLOW='#FFFFC500'
@@ -35,14 +36,12 @@ COLOR_F_CYAN='#FF00FFFF'
 COLOR_B_WHITE='#FFAAAAAA'
 COLOR_F_WHITE='#FFFFFFFF'
 COLOR_FREE_BG='#FF333232'
-#COLOR_OCCUPIED_BG='#FFAAAAAA'
-#COLOR_FOCUSED_BG='#FF004499'
 
 COLOR_URGENT_BG='#FFFFC500'
 
 COLOR_FG='#FF000000'
 COLOR_PANEL_BG='#FF000000'
-COLOR_VOL_MUTE_BG='#FFFFFFFF'
+COLOR_VOL_MUTE_BG='#FFFF00A8'
 COLOR_VOL_MUTE_FG='#FF000000'
 COLOR_BATT_MED_BG='#FFD75B00'
 #COLOR_BATT_LOW_BG='#FF000000'
@@ -51,12 +50,12 @@ COLOR_BATT_LOW_BG='#FF990000'
 COLOR_BATT_LOW_FG='#FF000000'
 COLOR_TITLE_FG='#FF000000'
 if [ "$HOSTNAME" == "desktopArch" ]; then
-    COLOR_VOL_BG='#FF00FFFF'
+    COLOR_VOL_BG='#FF00BD1D'
     COLOR_TITLE_BG='#FF0070FF'
     COLOR_CLOCK_BG='#FF0070FF'
     COLOR_OCCUPIED_BG='#FF0070FF'
-    COLOR_FOCUSED_BG='#FF00FFFF'
-    COLOR_BATT_HIGH_BG='#FF00FFFF'
+    COLOR_FOCUSED_BG='#FF00BD1D'
+    COLOR_BATT_HIGH_BG='#FF00BD1D'
 elif [ "$HOSTNAME" == "laptopArch" ]; then
     COLOR_VOL_BG='#FF004499'
     COLOR_TITLE_BG='#FF004499'
@@ -86,7 +85,7 @@ while read -r line ; do
             ;;
         T*)
             # xtitle output
-            vimstr="vim  "
+            vimstr="vim "
             title_raw="${line#?}"
             if [[ "$title_raw" == *" - Mozilla Firefox" ]]; then
                 title_raw=${title_raw%$" - Mozilla Firefox"}
@@ -97,16 +96,14 @@ while read -r line ; do
             elif [[ "$title_raw" == *" - Sublime Text (UNREGISTERED)" ]]; then
                 title_raw="%{T3}%{T-} "${title_raw%$" - Sublime Text (UNREGISTERED)"}
             elif [[ "$title_raw" == $vimstr* ]]; then
-                title_raw="%{T3}%{T-}"${title_raw#$"vim "}
+                title_raw="%{T3}%{T-}"${title_raw#$"vim"}
             fi
             if [[ "$title_raw" == *" - YouTube" ]]; then
                 title_raw=" "${title_raw%$" - YouTube"}
-            elif [[ "$title_raw" == *"/home/kendall" ]]; then
-                title_raw=${title_raw%$"/home/kendall"}"%{T2}%{T-}"
-            elif [[ "$title_raw" == *" /home/kendall/loads" ]]; then
-                title_raw=${title_raw%$"/home/kendall/loads"}""
-            elif [[ "$title_raw" == *" /home/kendall/box" ]]; then
-                title_raw=${title_raw%$"/home/kendall/box"}"%{T3}%{T-}"
+            elif [[ "$title_raw" == *"~/loads" ]]; then
+                title_raw=${title_raw%$"~/loads"}""
+            elif [[ "$title_raw" == *"~/box" ]]; then
+                title_raw=${title_raw%$"~/box"}"%{T3}%{T-}"
             fi
             title="%{T2}${title_raw}%{T-}"
             ;;
@@ -276,11 +273,14 @@ while read -r line ; do
     if [ "$HOSTNAME" == "desktopArch" ]; then
         echo -e "%{c}%{F$COLOR_TITLE_BG}$ICON_ARROW_L%{F-}%{B$COLOR_TITLE_BG}%{F$COLOR_TITLE_FG} ${title} %{F-}%{B-}%{F$COLOR_TITLE_BG}$ICON_ARROW_R%{F-}\
 %{l}${wm_infos2}\
-%{r}%{F${COLOR_CLOCK_BG}}$ICON_ARROW_L%{F-}\
+%{r}%{A1:pavucontrol:}%{A3:volumeadjust -t:}%{A4:volumeadjust -u:}%{A5:volumeadjust -d:}\
+%{F${color_vol_bg}}$ICON_ARROW_L%{F-}\
+%{B${color_vol_bg}}%{F${color_vol_fg}}${volume} %{F-}%{A}%{A}%{A}%{A}\
+%{F${COLOR_CLOCK_BG}}$ICON_ARROW_L%{F-}%{B-}\
 %{B${COLOR_CLOCK_BG}}%{F${COLOR_FG}} ${time_date} %{F-}%{B-}\
 %{S+}%{c}%{F$COLOR_TITLE_BG}$ICON_ARROW_L%{F-}%{B$COLOR_TITLE_BG}%{F$COLOR_TITLE_FG} ${title} %{F-}%{B-}%{F$COLOR_TITLE_BG}$ICON_ARROW_R%{F-}\
 %{l}${wm_infos1}\
-%{r}%{A1:pavucontrol:}%{A3:myvolumetoggle:}%{A4:myvolumeup:}%{A5:myvolumedown:}\
+%{r}%{A1:pavucontrol:}%{A3:volumeadjust -t:}%{A4:volumeadjust -u:}%{A5:volumeadjust -d:}\
 %{F${color_vol_bg}}$ICON_ARROW_L%{F-}\
 %{B${color_vol_bg}}%{F${color_vol_fg}}${volume} %{F-}%{A}%{A}%{A}%{A}\
 %{F${COLOR_CLOCK_BG}}$ICON_ARROW_L%{F-}%{B-}\
