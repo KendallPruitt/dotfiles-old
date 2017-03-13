@@ -104,11 +104,8 @@ while read -r line ; do
                 $vimstr1*)
                     title_raw="%{T3}%{T-}"${title_raw#$"vim"}
                     ;;
-                $vimstr2*)
-                    title_raw="%{T3}%{T-}"${title_raw#$"vim"}
-                    ;;
-                $vimstr2*)
-                    title_raw="%{T3}%{T-}"${title_raw%$"- VIM"}
+                *$vimstr2)
+                    title_raw="%{T3} %{T-}"${title_raw%$" - VIM"}
                     ;;
                 "kendall@"*"Arch: "*)
                     title_raw="%{T3}%{T-}"${title_raw#$"kendall@"*"Arch:"}
