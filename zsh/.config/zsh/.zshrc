@@ -33,7 +33,7 @@ fi
 # DISABLE_UPDATE_PROMPT=true
 
 # set cursor color
-echo -ne "\033]12;#0070ff\007"
+echo -ne "\033]12;#0080ff\007"
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -153,6 +153,20 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 zstyle ':completion:*' menu select
 setopt COMPLETE_ALIASES
 
+setopt BANG_HIST
+setopt EXTENDED_HISTORY
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt HIST_VERIFY
+setopt HIST_BEEP
+
 autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
@@ -219,3 +233,6 @@ POWERLEVEL9K_VCS_CLEAN_BACKGROUND='002'
 POWERLEVEL9K_VCS_CLEAN_FOREGROUND='016'
 POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='006'
 POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND='016'
+
+
+alias calc="bc -lq"

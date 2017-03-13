@@ -3,16 +3,16 @@
 if [ "$#" -eq 1 ]; then
     if [ "$HOSTNAME" == "desktopArch" ]; then
         if [ "$1" == "-t" ]; then
-            pactl set-sink-mute 1 toggle
+            pactl set-sink-mute 0 toggle
         elif [ "$1" == "-d" ]; then
-            pactl set-sink-volume 1 -2%
+            pactl set-sink-volume 0 -2%
         elif [ "$1" == "-u" ]; then
             ALSA_VOLUME=$(amixer get Master | grep 'Front Left: Playback' | \
                 grep -o '...%' | sed 's/\[//' | sed 's/%//' | sed 's/ //')
             if [ "$ALSA_VOLUME" -lt 100 ]; then
-                pactl set-sink-volume 1 +2%
+                pactl set-sink-volume 0 +2%
             else
-                pactl set-sink-volume 1 100%
+                pactl set-sink-volume 0 100%
             fi
             # invalid arg, display help menu
         fi
@@ -21,16 +21,16 @@ if [ "$#" -eq 1 ]; then
         echo "V$ALSA_VOLUME" > $PANEL_FIFO &
     elif [ "$HOSTNAME" == "laptopArch" ]; then
         if [ "$1" == "-t" ]; then
-            pactl set-sink-mute 0 toggle
+            pactl set-sink-mute 1 toggle
         elif [ "$1" == "-d" ]; then
-            pactl set-sink-volume 0 -2%
+            pactl set-sink-volume 1 -2%
         elif [ "$1" == "-u" ]; then
             ALSA_VOLUME=`pactl list sinks | grep '^[[:space:]]Volume:' | \
                 head -n $(( $SINK + 1 )) | tail -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,'`
             if [ "$ALSA_VOLUME" -lt 100 ]; then
-                pactl set-sink-volume 0 +2%
+                pactl set-sink-volume 1 +2%
             else
-                pactl set-sink-volume 0 100%
+                pactl set-sink-volume 1 100%
             fi
             # invalid arg, display help menu
         fi

@@ -872,6 +872,8 @@ _comps=(
 'podtoc' '_perl_modules'
 'poff' '_pon'
 'policytool' '_java'
+'polybar' '_polybar'
+'polybar-msg' '_polybar_msg'
 'pon' '_pon'
 'popd' '_directory_stack'
 'popdls' '_cdls_popdls_pushdls'

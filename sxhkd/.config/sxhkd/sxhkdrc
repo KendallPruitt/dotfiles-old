@@ -11,11 +11,16 @@ super + Return
 
 # program launcher
 super + space
-    dmenu_extended_run
+    rofi -show run
+#    dmenu_extended_run
 
 # make sxhkd reload its configuration files:
 super + Escape
     pkill -USR1 -x sxhkd
+
+### lock screen
+ctrl + alt + l
+    i3lock-extra -s -p
 
 ###
 ### tdrop
@@ -68,12 +73,40 @@ super + button{8,9}
 #super + button{4,5}
 #    bspc desktop -f {prev,next}
 
+################################################################################
+### Rocket League
+################################################################################
 ### move rocket league floating window to proper position
-super + shift + alt + ctrl + r
-    rlmovewindow
-#    xdotool getactivewindow windowmove 0 0
-#    xdo move -x -3882 -y -2
+super + shift + alt + ctrl + a
+    rocketl -a
 
+### kill rocket league
+super + shift + alt + ctrl + w
+    rocketl -w
+
+### rocket league solo
+super + shift + alt + ctrl + s
+    rocketl -s
+
+### rocket league dual
+super + shift + alt + ctrl + d
+    rocketl -d
+################################################################################
+### ScreenShots
+################################################################################
+### grab screen
+super + shift + ctrl + 1
+    maim ~/images/screenshots/$(date +%y-%m-%d_%I-%M-%S).png
+
+### grab window
+super + shift + ctrl + 2
+    scrot -u '%y-%m-%d_%I-%M-%S.png' -e 'mv $f ~/images/screenshots/'
+
+### grab rectangular selection
+super + shift + ctrl + 3
+    maim -s ~/images/screenshots/$(date +%y-%m-%d_%I-%M-%S).png
+
+################################################################################
 
 #
 # bspwm hotkeys

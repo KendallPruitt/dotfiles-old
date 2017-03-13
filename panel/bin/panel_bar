@@ -85,19 +85,35 @@ while read -r line ; do
             ;;
         T*)
             # xtitle output
-            vimstr="vim "
-            title_raw="${line#?}"
-            if [[ "$title_raw" == *" - Mozilla Firefox" ]]; then
-                title_raw=${title_raw%$" - Mozilla Firefox"}
-            elif [[ "$title_raw" == *" - Google Chrome" ]]; then
-                title_raw=${title_raw%$" - Google Chrome"}
-            elif [[ "$title_raw" == *" - Chromium" ]]; then
-                title_raw=${title_raw%$" - Chromium"}
-            elif [[ "$title_raw" == *" - Sublime Text (UNREGISTERED)" ]]; then
-                title_raw="%{T3}%{T-} "${title_raw%$" - Sublime Text (UNREGISTERED)"}
-            elif [[ "$title_raw" == $vimstr* ]]; then
-                title_raw="%{T3}%{T-}"${title_raw#$"vim"}
-            fi
+            vimstr1="vim "
+            vimstr2=" - VIM"
+            title_raw=$(xprop -id ${line#?} | awk '/_NET_WM_NAME/{$1=$2="";print}' | cut -d'"' -f2)
+            case $title_raw in
+                *" - Mozilla Firefox")
+                    title_raw=${title_raw%$" - Mozilla Firefox"}
+                    ;;
+                *" - Google Chrome")
+                    title_raw=${title_raw%$" - Google Chrome"}
+                    ;;
+                *" - Chromium")
+                    title_raw=${title_raw%$" - Chromium"}
+                    ;;
+                *" - Sublime Text (UNREGISTERED)")
+                    title_raw="%{T3}%{T-} "${title_raw%$" - Sublime Text (UNREGISTERED)"}
+                    ;;
+                $vimstr1*)
+                    title_raw="%{T3}%{T-}"${title_raw#$"vim"}
+                    ;;
+                $vimstr2*)
+                    title_raw="%{T3}%{T-}"${title_raw#$"vim"}
+                    ;;
+                $vimstr2*)
+                    title_raw="%{T3}%{T-}"${title_raw%$"- VIM"}
+                    ;;
+                "kendall@"*"Arch: "*)
+                    title_raw="%{T3}%{T-}"${title_raw#$"kendall@"*"Arch:"}
+                    ;;
+            esac
             if [[ "$title_raw" == *" - YouTube" ]]; then
                 title_raw=" "${title_raw%$" - YouTube"}
             elif [[ "$title_raw" == *"~/loads" ]]; then
@@ -135,11 +151,7 @@ while read -r line ; do
         V*)
             # volume
             vol_value="${line#?}"
-            if [ "$HOSTNAME" == "desktopArch" ]; then
-                vol_state=$(amixer get Master | grep 'Front Left: Playback' | grep -o '\[on]')
-            elif [ "$HOSTNAME" == "laptopArch" ]; then
-                vol_state=$(amixer get Master | grep 'Mono: Playback' | grep -o '\[on]')
-            fi
+            vol_state=$(amixer get Master | grep 'Front Left: Playback' | grep -o '\[on]')
             if [ $vol_state ]; then
                 color_vol_bg="$COLOR_VOL_BG"
                 color_vol_fg="$COLOR_FG"
