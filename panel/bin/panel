@@ -40,16 +40,13 @@ done &
 
 #xtitle -sf 'T%s' -t 70 > "$PANEL_FIFO" &
 #xtitle -isf 'T%s' > "$PANEL_FIFO" &
+
+#Title
 ### Just in case xprop -spy crashes, let's put it in a loop as well
 until xprop -spy -root _NET_ACTIVE_WINDOW | sed -un 's/.*\(0x.*\)/T\1/p' > "${PANEL_FIFO}"; do
     echo "xprop -spy -root... crashed with exit code $?.  Respawning..." >&2
     sleep 1
 done &
-# if [ $EPOCH -eq 1 ]; then
-#     clock_format='%s'
-# else
-#     clock_format='%a %b %-d %-I:%M'
-# fi
 
 # Clock
 clock_format='%a %b %-d %-I:%M'
@@ -58,30 +55,8 @@ while true; do
     sleep 10
 done > "$PANEL_FIFO" &
 
-# # Volume
-# while true; do
-#     # Not quering pulse because it uses a hell lot of CPU
-#     state=$(amixer get Master | grep 'Mono: Playback' | grep '\[on]')
-#     volume=$(amixer -D pulse get Master | grep 'Front Left: Playback' | grep -o '...%' | sed 's/\[//' | sed 's/%//' | sed 's/ //')
-#     if [ $state ]; then
-#         if [ $volume -ge 70 ]; then
-#             vicon=$ICON_VOLUME
-#         elif [ $volume -gt 0 ]; then
-#             vicon=$ICON_VOLUME_LOW
-#         else
-#             vicon=$ICON_VOLUME_LOW
-#         fi
-#     else
-#         vicon=$ICON_MUTE
-#     fi
-#     echo -e "V$(icon $vicon) $volume"
-#     #sleep $REFRESH_VOLUME
-# done
-
 # Volume
 `~/bin/volumeadjust -u` > "$PANEL_FIFO" &
-# if (^) this doesn't work, try (v) this
-#$(~/bin/myvolumeup) > "$PANEL_FIFO" &
 
 ## Player status
 # last_title="-"
@@ -111,21 +86,13 @@ done > "$PANEL_FIFO" &
 # done > "$PANEL_FIFO" &
 if [ $HOSTNAME == "laptopArch" ]; then
     PANEL_HEIGHT=15
-    #PANEL_FONT="office code pro:size=9:weight=medium"
-
-    #DejaVu Sans Mono for Powerline Nerd Font Complete.ttf
     PANEL_FONT1="DejaVuSansMonoforPowerline Nerd Font:size=9:weight=medium:style=book"
     PANEL_FONT2="office code pro:size=10:weight=medium"
     PANEL_FONT3="mplus Nerd Font:size=11:weight=regular"
-    #PANEL_ICON_FONT3="FontAwesome:size=11"
     PANEL_FONT4="material icons:size=12"
-    #PANEL_ICON_FONT1="icons:size=10:weight=bold"
-    PANEL_WM_NAME=bspwm_panel
+    ### PANEL_WM_NAME=bspwm_panel
     #PANEL_FIFO=/tmp/pamel-fifo
     #PANEL_HEIGHT=30
-    #PANEL_WM_NAME="lemonbar"
-    #PANEL_FONT_FAMILY=-*-erusfont-medium-*-*-*-11-*-*-*-*-*-*-*
-    #PANEL_ICON_FONT_FAMILY=-*-siji-medium-*-*-*-10-*-*-*-*-*-*-*
     #REFRESH_VOLUME=0.5
     #REFRESH_MUSIC=1
     REFRESH_BATTERY=10
@@ -137,7 +104,6 @@ if [ $HOSTNAME == "laptopArch" ]; then
     while true; do
         CHARGE_NOW=`cat $BAT/charge_now`
         CHARGE_FULL=`cat $BAT/charge_full`
-        # PERCENT=`echo "($CHARGE_NOW * 100)/$CHARGE_FULL" | bc`
         batt=`echo "($CHARGE_NOW * 100)/$CHARGE_FULL" | bc`
         # STATUS=`cat $BAT/status`
 
@@ -155,26 +121,14 @@ if [ $HOSTNAME == "laptopArch" ]; then
     done > "$PANEL_FIFO" &
 elif [ "$HOSTNAME" == "desktopArch" ]; then
     PANEL_HEIGHT=15
-    #PANEL_FONT="office code pro:size=9:weight=medium"
-
-    #DejaVu Sans Mono for Powerline Nerd Font Complete.ttf
-    #PANEL_FONT1="DejaVuSansMonoforPowerline Nerd Font:size=9:weight=medium:style=book"
-    #PANEL_ICON_FONT3="FontAwesome:size=11"
-    #PANEL_FONT2="mplus Nerd Font:size=10:weight=regular"
-    #PANEL_ICON_FONT="material icons:size=10"
     PANEL_FONT1="DejaVuSansMonoforPowerline Nerd Font:size=9:weight=medium:style=book"
     PANEL_FONT2="office code pro:size=9:weight=medium"
     PANEL_FONT3="mplus Nerd Font:size=14:weight=regular"
-    #PANEL_ICON_FONT3="FontAwesome:size=11"
     PANEL_FONT4="material icons:size=12"
     PANEL_FONT5="mplus Nerd Font:size=13:weight=regular"
-    #PANEL_ICON_FONT1="icons:size=10:weight=bold"
-    PANEL_WM_NAME=bspwm_panel
+    ### PANEL_WM_NAME=bspwm_panel
     #PANEL_FIFO=/tmp/pamel-fifo
     #PANEL_HEIGHT=30
-    #PANEL_WM_NAME="lemonbar"
-    #PANEL_FONT_FAMILY=-*-erusfont-medium-*-*-*-11-*-*-*-*-*-*-*
-    #PANEL_ICON_FONT_FAMILY=-*-siji-medium-*-*-*-10-*-*-*-*-*-*-*
     #REFRESH_VOLUME=0.5
     #REFRESH_MUSIC=1
     REFRESH_BATTERY=10
@@ -185,37 +139,8 @@ elif [ "$HOSTNAME" == "desktopArch" ]; then
 fi
 
 #. panel_colors
-# COLOR_BLACK="#000000"
-# COLOR_B_BLACK="#252525"
-# COLOR_F_BLACK="#505050"
-# COLOR_B_RED="#990000"
-# COLOR_F_RED="#e50000"
-# COLOR_B_GREEN="#008715"
-# COLOR_F_GREEN="#00ff27"
-# COLOR_B_YELLOW="#d75b00"
-# COLOR_F_YELLOW="#ffc500"
-# COLOR_B_BLUE="#004499"
-# COLOR_F_BLUE="#0070ff"
-# COLOR_B_MAGENTA="#820082"
-# COLOR_F_MAGENTA="#ff00a8"
-# COLOR_B_CYAN="#00a6a6"
-# COLOR_F_CYAN="#00ffff"
-# COLOR_B_WHITE="#aaaaaa"
-# COLOR_F_WHITE="#ffffff"
-# COLOR_FREE_BG="#333232"
-# COLOR_OCCUPIED_BG="#505050"
-# COLOR_FOCUSED_BG="#004499"
-# COLOR_URGENT_BG="#d75b00"
-COLOR_FG="#ffffff"
-COLOR_PANEL_BG="#000000"
-# COLOR_VOL_BG="#990000"
-# COLOR_VOL_MUTE_BG="#ffffff"
-# COLOR_BATT_HIGH_BG="#008715"
-# COLOR_BATT_MED_BG="#d75b00"
-# COLOR_BATT_LOW_BG="#000000"
-# COLOR_BATT_LOW_FG="#e50000"
-# COLOR_TITLE_BG="#004499"
-# COLOR_CLOCK_BG="#004499"
+COLOR_FG="$COLOR_WHITE2"
+COLOR_PANEL_BG="$COLOR_BLACK1"
 
 cat "$PANEL_FIFO" | panel_bar | lemonbar -b -d -n "$PANEL_WM_NAME" -g x$PANEL_HEIGHT -f "$PANEL_FONT1" -f "$PANEL_FONT2" -f "$PANEL_FONT3" -f "$PANEL_FONT4" -f "$PANEL_FONT5" -F "$COLOR_FG" -B "$COLOR_PANEL_BG" -a 32 -o "$offset1" -o "$offset2" -o "$offset3" -o "$offset4" | sh &
 

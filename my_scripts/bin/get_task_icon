@@ -99,9 +99,9 @@ case $tree in
     # *"xterm"*)
     #     echo -e "$TASK_ICON_TERMINAL2"
     #     ;;
-    # *"terminator"*)
-    #     echo -e "$TASK_ICON_TERMINAL2"
-    #     ;;
+    *"terminator"*)
+        echo -e "%{T3}$TASK_ICON_TERMINAL1%{T-}"
+        ;;
     *"Deluge"*)
         echo -e "$TASK_ICON_DELUGE"
         ;;
