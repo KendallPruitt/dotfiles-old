@@ -16,31 +16,53 @@ ICON_ARROW_L=""
 ICON_ARROW_R=""
 SMALL_SPACE=" "
 
+#. panel_colors
+COLOR_BLACK='#FF000000'
+COLOR_B_BLACK='#FF252525'
+COLOR_F_BLACK='#FF505050'
+COLOR_B_RED='#FF990000'
+COLOR_F_RED='#FFE50000'
+COLOR_B_GREEN='#FF008715'
+COLOR_M_GREEN='#FF00BD1D'
+COLOR_F_GREEN='#FF00FF27'
+COLOR_B_YELLOW='#FFD75B00'
+COLOR_F_YELLOW='#FFFFC500'
+COLOR_B_BLUE='#FF004499'
+COLOR_F_BLUE='#FF0070FF'
+COLOR_B_MAGENTA='#FF820082'
+COLOR_F_MAGENTA='#FFFF00A8'
+COLOR_B_CYAN='#FF00A6A6'
+COLOR_F_CYAN='#FF00FFFF'
+COLOR_B_WHITE='#FFAAAAAA'
+COLOR_F_WHITE='#FFFFFFFF'
+COLOR_FREE_BG='#FF333232'
 
-COLOR_URGENT_BG="$COLOR_YELLOW2"
+COLOR_URGENT_BG='#FFFFC500'
 
-COLOR_FG="$COLOR_BLACK1"
-COLOR_PANEL_BG="$COLOR_BLACK1"
-COLOR_VOL_MUTE_BG="$COLOR_MAGENTA2"
-COLOR_VOL_MUTE_FG="$COLOR_BLACK1"
-COLOR_BATT_MED_BG="$COLOR_YELLOW1"
-COLOR_BATT_LOW_BG="$COLOR_RED1"
-COLOR_BATT_LOW_FG="$COLOR_BLACK1"
-COLOR_TITLE_FG="$COLOR_BLACK1"
+COLOR_FG='#FF000000'
+COLOR_PANEL_BG='#FF000000'
+COLOR_VOL_MUTE_BG='#FFFF00A8'
+COLOR_VOL_MUTE_FG='#FF000000'
+COLOR_BATT_MED_BG='#FFD75B00'
+#COLOR_BATT_LOW_BG='#FF000000'
+COLOR_BATT_LOW_BG='#FF990000'
+#COLOR_BATT_LOW_FG='#FFE50000'
+COLOR_BATT_LOW_FG='#FF000000'
+COLOR_TITLE_FG='#FF000000'
 if [ "$HOSTNAME" == "desktopArch" ]; then
     COLOR_VOL_BG='#FF00BD1D'
-    COLOR_TITLE_BG="$COLOR_BLUE2"
-    COLOR_CLOCK_BG="$COLOR_BLUE2"
-    COLOR_OCCUPIED_BG="$COLOR_BLUE2"
+    COLOR_TITLE_BG='#FF0070FF'
+    COLOR_CLOCK_BG='#FF0070FF'
+    COLOR_OCCUPIED_BG='#FF0070FF'
     COLOR_FOCUSED_BG='#FF00BD1D'
     COLOR_BATT_HIGH_BG='#FF00BD1D'
 elif [ "$HOSTNAME" == "laptopArch" ]; then
-    COLOR_VOL_BG="$COLOR_BLUE1"
-    COLOR_TITLE_BG="$COLOR_BLUE1"
-    COLOR_CLOCK_BG="$COLOR_BLUE1"
-    COLOR_OCCUPIED_BG="$COLOR_BLUE1"
-    COLOR_FOCUSED_BG="$COLOR_GREEN1"
-    COLOR_BATT_HIGH_BG="$COLOR_GREEN1"
+    COLOR_VOL_BG='#FF004499'
+    COLOR_TITLE_BG='#FF004499'
+    COLOR_CLOCK_BG='#FF004499'
+    COLOR_OCCUPIED_BG='#FF004499'
+    COLOR_FOCUSED_BG='#FF008715'
+    COLOR_BATT_HIGH_BG='#FF008715'
 fi
 
 
@@ -101,19 +123,19 @@ while read -r line ; do
         B*)
             # battery output
             BATT=${line#?}
-            if [ "${BATT}" -ge 90 ]; then
+            if [[ "${BATT}" -ge 90 ]]; then
                 BATT="$ICON_BATT_FULL%{T2}$BATT%{T-}"
                 color_batt_bg="$COLOR_BATT_HIGH_BG"
                 color_batt_fg="$COLOR_FG"
-            elif [ "${BATT}" -ge 65 ]; then
+            elif [[ "${BATT}" -ge 65 ]]; then
                 BATT="$ICON_BATT_HIGH%{T2}$BATT%{T-}"
                 color_batt_bg="$COLOR_BATT_HIGH_BG"
                 color_batt_fg="$COLOR_FG"
-            elif [ "${BATT}" -ge 35 ]; then
+            elif [[ "${BATT}" -ge 35 ]]; then
                 BATT="$ICON_BATT_HALF%{T2}$BATT%{T-}"
                 color_batt_bg="$COLOR_BATT_MED_BG"
                 color_batt_fg="$COLOR_FG"
-            elif [ "${BATT}" -ge 10 ]; then
+            elif [[ "${BATT}" -ge 10 ]]; then
                 BATT="$ICON_BATT_LOW%{T2}$BATT%{T-}"
                 color_batt_bg="$COLOR_BATT_LOW_BG"
                 color_batt_fg="$COLOR_BATT_LOW_FG"
@@ -126,7 +148,11 @@ while read -r line ; do
         V*)
             # volume
             vol_value="${line#?}"
+            #if [ "$HOSTNAME" == "desktopArch" ]; then
             vol_state=$(amixer get Master | grep 'Front Left: Playback' | grep -o '\[on]')
+            #elif [ "$HOSTNAME" == "laptopArch" ]; then
+            #    vol_state=$(amixer get Master | grep 'Mono: Playback' | grep -o '\[on]')
+            #fi
             if [ $vol_state ]; then
                 color_vol_bg="$COLOR_VOL_BG"
                 color_vol_fg="$COLOR_FG"

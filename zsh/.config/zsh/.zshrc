@@ -1,6 +1,6 @@
 # Path to your oh-my-zsh installation.
 ZSH=/usr/share/oh-my-zsh/
-export TERM="xterm-termite"
+# export TERM="xterm-termite"
 
 # if [[ $TERM == xterm-termite ]]; then
 #   . /etc/profile.d/vte.sh
@@ -41,10 +41,10 @@ fi
 # DISABLE_UPDATE_PROMPT=true
 
 # set cursor color
-echo -ne "\033]12;$COLOR_BLUE2\007"
+echo -ne "\033]12;#0080ff\007"
 
 # Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
+# Look in ~/.config/oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 ZSH_THEME="powerlevel9k/powerlevel9k"
@@ -85,10 +85,10 @@ COMPLETION_WAITING_DOTS="true"
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM=~/.oh-my-zsh/custom/themes
+ZSH_CUSTOM=$XDG_CONFIG_HOME/oh-my-zsh/custom/
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Which plugins would you like to load? (plugins can be found in ~/.config/oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.config/oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
@@ -121,8 +121,8 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+# alias zshconfig="mate ~/.config/zsh/.zshrc"
+# alias ohmyzsh="mate ~/.config/oh-my-zsh"
 
 export DEFAULT_USER="kendall"
 
@@ -143,11 +143,10 @@ autoload -Uz compinit
 compinit
 
 # alias sup="su -c zsh"
-alias sup="sudo -E -s"
 
 zstyle ':completion:*' rehash true
 
-ZSH_CACHE_DIR=$HOME/.oh-my-zsh-cache
+ZSH_CACHE_DIR=$XDG_CACHE_HOME/oh-my-zsh-cache
 if [[ ! -d $ZSH_CACHE_DIR ]]; then
   mkdir $ZSH_CACHE_DIR
 fi
@@ -242,5 +241,6 @@ POWERLEVEL9K_VCS_CLEAN_FOREGROUND='016'
 POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='006'
 POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND='016'
 
-
+alias l="LC_COLLATE=C ls -lAh --group-directories-first"
+alias sup="sudo -E -s"
 alias calc="bc -lq"
