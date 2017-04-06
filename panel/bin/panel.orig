@@ -1,0 +1,150 @@
+#! /bin/bash
+
+# . panel_config
+# . panel_icons
+
+
+
+##num_mon=$(bspc query -M | wc -l)
+#num_mon=$(xrandr | grep " connected" | wc -l)
+#max_res=$(xrandr | grep "primary" | awk -F'[ +]' '{print $4}')
+#IFS=x; read -a sizes <<<"$max_res"
+#top_pad=$(bspc config window_gap)
+#side_pad=$(bspc config window_gap)
+#monitor_pad=$(xrandr | grep "primary" | awk -F'+' '{print $2}')
+#IFS=x; read -a sizes <<<"$max_res"
+#rwidth=$(expr ${sizes[0]} - 2 \* $side_pad)
+#BAR_GEOMETRY="${rwidth}x${PANEL_HEIGHT}+$(($side_pad + $monitor_pad))+${top_pad}"
+#BAR_GEOMETRY="1440x${PANEL_HEIGHT}+0+0"
+
+#EPOCH=1
+
+while [ $(pgrep -cx panel) -gt 1 ] ; do
+    pkill -ox -9 panel
+done
+
+trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
+killall -9 stalonetray
+#killall -9 xtitle
+
+[ -e "$PANEL_FIFO" ] && rm "$PANEL_FIFO"
+mkfifo "$PANEL_FIFO"
+
+bspc config bottom_padding $PANEL_HEIGHT
+
+### put bspc subscripe report in an until loop because it frequently crashes
+until bspc subscribe report > "$PANEL_FIFO"; do
+    echo "bspc subscribe report crashed with exit code $?.  Respawning.." >&2
+    sleep 1
+done &
+
+#xtitle -sf 'T%s' -t 70 > "$PANEL_FIFO" &
+#xtitle -isf 'T%s' > "$PANEL_FIFO" &
+<<<<<<< HEAD
+
+#Title
+=======
+>>>>>>> Hopefully I merged the remote changes with the local laptop changes.
+### Just in case xprop -spy crashes, let's put it in a loop as well
+until xprop -spy -root _NET_ACTIVE_WINDOW | sed -un 's/.*\(0x.*\)/T\1/p' > "${PANEL_FIFO}"; do
+    echo "xprop -spy -root... crashed with exit code $?.  Respawning..." >&2
+    sleep 1
+done &
+
+# Clock
+clock_format='%a %b %-d %-I:%M'
+while true; do
+    echo "S$(date +"$clock_format")"
+    sleep 10
+done > "$PANEL_FIFO" &
+
+# Volume
+`~/bin/volumeadjust -u` > "$PANEL_FIFO" &
+
+## Player status
+# last_title="-"
+# while true; do
+#     if [[ $(mpc status | wc -l) -eq 3 ]]; then
+#     last_title=$(mpc status | head -n 1) # In case the music is stopped
+#     elif [[ $(mpc status | wc -l) -eq 0 ]]; then
+#     last_title="-"
+#     fi
+
+#     if [[ -n $(mpc status | grep paused) ]]; then
+#     icon="$ICON_PAUSE"
+#     elif [[ -n $(mpc status | grep playing) ]]; then
+#     icon="$ICON_PLAY"
+#     else
+#     icon="$ICON_STOP"
+#     fi
+#     echo -e "PS$(icon $icon) $last_title"
+#     sleep $REFRESH_MUSIC
+# done > "$PANEL_FIFO" &
+
+# Battery percentage and time until full charge/discharge
+# while true; do
+#     batt_status="$(battery $ICON_BATTERY_FULL $ICON_BATT_HIGH $ICON_BATTERY_HALF $ICON_BATT_LOW $ICON_BATTERY_EMPTY)"
+#     echo "B$batt_status"
+#     sleep $REFRESH_BATTERY
+# done > "$PANEL_FIFO" &
+if [ $HOSTNAME == "laptopArch" ]; then
+    PANEL_HEIGHT=15
+    PANEL_FONT1="DejaVuSansMonoforPowerline Nerd Font:size=9:weight=medium:style=book"
+    PANEL_FONT2="office code pro:size=10:weight=medium"
+    PANEL_FONT3="mplus Nerd Font:size=11:weight=regular"
+    PANEL_FONT4="material icons:size=12"
+    ### PANEL_WM_NAME=bspwm_panel
+    #PANEL_FIFO=/tmp/pamel-fifo
+    #PANEL_HEIGHT=30
+    #REFRESH_VOLUME=0.5
+    #REFRESH_MUSIC=1
+    REFRESH_BATTERY=10
+    offset1=-1
+    offset2=0
+    offset3=1
+    offset4=0
+    BAT="/sys/class/power_supply/BAT0"
+    while true; do
+        CHARGE_NOW=`cat $BAT/charge_now`
+        CHARGE_FULL=`cat $BAT/charge_full`
+        batt=`echo "($CHARGE_NOW * 100)/$CHARGE_FULL" | bc`
+        # STATUS=`cat $BAT/status`
+
+        # if [ $STATUS == "Charging" ]; then
+        #     STATUS="+"
+        # elif [ $STATUS == "Discharging" ]; then
+        #     STATUS="-"
+        # else
+        #     STATUS=""
+        # fi
+
+        # echo "B$STATUS$PERCENT"
+        echo "B$batt"
+        sleep 5
+    done > "$PANEL_FIFO" &
+elif [ "$HOSTNAME" == "desktopArch" ]; then
+    PANEL_HEIGHT=15
+    PANEL_FONT1="DejaVuSansMonoforPowerline Nerd Font:size=9:weight=medium:style=book"
+    PANEL_FONT2="office code pro:size=9:weight=medium"
+    PANEL_FONT3="mplus Nerd Font:size=14:weight=regular"
+    PANEL_FONT4="material icons:size=12"
+    PANEL_FONT5="mplus Nerd Font:size=13:weight=regular"
+    ### PANEL_WM_NAME=bspwm_panel
+    #PANEL_FIFO=/tmp/pamel-fifo
+    #PANEL_HEIGHT=30
+    #REFRESH_VOLUME=0.5
+    #REFRESH_MUSIC=1
+    REFRESH_BATTERY=10
+    offset1=-3
+    offset2=-2
+    offset3=3
+    offset4=-2
+fi
+
+#. panel_colors
+COLOR_FG="$COLOR_WHITE2"
+COLOR_PANEL_BG="$COLOR_BLACK1"
+
+cat "$PANEL_FIFO" | panel_bar | lemonbar -b -d -n "$PANEL_WM_NAME" -g x$PANEL_HEIGHT -f "$PANEL_FONT1" -f "$PANEL_FONT2" -f "$PANEL_FONT3" -f "$PANEL_FONT4" -f "$PANEL_FONT5" -F "$COLOR_FG" -B "$COLOR_PANEL_BG" -a 32 -o "$offset1" -o "$offset2" -o "$offset3" -o "$offset4" | sh &
+
+wait
