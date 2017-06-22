@@ -7,3 +7,4 @@
 
 zsh/.config/zsh/.zhistory
 *.orig
+*.zcompdump*
