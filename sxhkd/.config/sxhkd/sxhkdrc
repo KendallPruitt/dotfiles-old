@@ -47,12 +47,17 @@ XF86AudioMute
     volumeadjust -t
 
 ### stop
-
+XF86AudioStop
+    mediakeysend -s
 ### previous track
-
+XF86AudioPrev
+    mediakeysend -b
 ### play/pause
-
+XF86AudioPlay
+    mediakeysend -p
 ### next track
+XF86AudioNext
+    mediakeysend -f
 
 ###
 ### brightness keys

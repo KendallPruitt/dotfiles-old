@@ -41,7 +41,7 @@ fi
 # DISABLE_UPDATE_PROMPT=true
 
 # set cursor color
-echo -ne "\033]12;#0080ff\007"
+echo -ne "\033]12;$COLOR_BLUE2\007"
 
 # Set name of the theme to load.
 # Look in ~/.config/oh-my-zsh/themes/
