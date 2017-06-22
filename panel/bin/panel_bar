@@ -25,19 +25,19 @@ COLOR_F_RED='#FFE50000'
 COLOR_B_GREEN='#FF008715'
 COLOR_M_GREEN='#FF00BD1D'
 COLOR_F_GREEN='#FF00FF27'
-COLOR_B_YELLOW='#FFD75B00'
+COLOR_B_YELLOW='#FFFF4800'
 COLOR_F_YELLOW='#FFFFC500'
 COLOR_B_BLUE='#FF004499'
-COLOR_F_BLUE='#FF0070FF'
+COLOR_F_BLUE='#FF0080FF'
 COLOR_B_MAGENTA='#FF820082'
 COLOR_F_MAGENTA='#FFFF00A8'
-COLOR_B_CYAN='#FF00A6A6'
-COLOR_F_CYAN='#FF00FFFF'
-COLOR_B_WHITE='#FFAAAAAA'
+COLOR_B_CYAN='#FF00AED0'
+COLOR_F_CYAN='#FF3CEBFF'
+COLOR_B_WHITE='#FF909090'
 COLOR_F_WHITE='#FFFFFFFF'
 COLOR_FREE_BG='#FF333232'
 
-COLOR_URGENT_BG='#FFFFC500'
+COLOR_URGENT_BG='#FFFF4800'
 
 COLOR_FG='#FF000000'
 COLOR_PANEL_BG='#FF000000'
@@ -175,6 +175,11 @@ while read -r line ; do
             wm_infos2=""
             IFS=':'
             set -- ${line#?}
+            if [[ $(xset q | grep "Caps Lock:" | awk '{print $4}' | grep -c on) -eq '1' ]]; then
+                COLOR_PANEL_BG='#FF00AED0'
+            else
+                COLOR_PANEL_BG='#FF000000'
+            fi
             while [ $# -gt 0 ] ; do
                 item=$1
                 name="${item#?}"

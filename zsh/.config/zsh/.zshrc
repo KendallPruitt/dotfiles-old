@@ -1,6 +1,6 @@
 # Path to your oh-my-zsh installation.
 ZSH=/usr/share/oh-my-zsh/
-# export TERM="xterm-termite"
+export TERM="xterm-256color"
 
 # if [[ $TERM == xterm-termite ]]; then
 #   . /etc/profile.d/vte.sh

@@ -54,6 +54,25 @@ XF86AudioMute
 
 ### next track
 
+###
+### brightness keys
+###
+
+### increase monitor brightness
+# XF86MonBrightnessUp
+#     brightnessadjust -M
+
+### decrease monitor brightness
+# XF86MonBrightnessDown
+#     brightnessadjust -m
+
+### increase keyboard brightness
+# XF86KbdBrightnessUp
+#     brightnessadjust -K
+
+### decrease keyboard brightness
+# XF86KbdBrightnessDown
+#     brightnessadjust -k
 
 ###
 ### other shortcuts added by me
