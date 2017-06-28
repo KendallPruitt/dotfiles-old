@@ -1,7 +1,7 @@
 [global_config]
   enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
   focus = mouse
-  inactive_color_offset = 0.75
+  inactive_color_offset = 0.5
   scroll_tabbar = True
   suppress_multiple_term_dialog = True
   title_font = SauceCodePro Nerd Font Medium 9
@@ -16,17 +16,17 @@
   close_term = <Primary>w
   cycle_next = <Primary><Shift>Page_Down
   cycle_prev = <Primary><Shift>Page_Up
-  go_down = <Alt>s
-  go_left = <Alt>a
-  go_right = <Alt>d
-  go_up = <Alt>w
+  go_down = <Alt><Super>s
+  go_left = <Alt><Super>a
+  go_right = <Alt><Super>d
+  go_up = <Alt><Super>w
   move_tab_left = <Primary>Page_Up
   move_tab_right = <Primary>Page_Down
   new_tab = <Primary>t
   next_tab = <Primary>Tab
   prev_tab = <Primary><Shift>Tab
-  rotate_ccw = <Alt>z
-  rotate_cw = <Alt>x
+  rotate_ccw = <Alt><Super>z
+  rotate_cw = <Alt><Super>x
   split_horiz = <Alt>c
   split_vert = <Alt>v
 [layouts]

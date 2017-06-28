@@ -15,7 +15,7 @@ super + space
 #    dmenu_extended_run
 
 # make sxhkd reload its configuration files:
-super + Escape
+ctrl + Escape
     pkill -USR1 -x sxhkd
 
 ### lock screen
@@ -179,7 +179,7 @@ super + ctrl + {x,y,z}
 #
 
 # focus the node (or send it) in the given direction
-super + {_,shift + }{h,j,k,l}
+alt + {_,shift + }{a,s,w,d}
     bspc node -{f,s} {west,south,north,east}
 
 # focus the node for the given path jump
@@ -214,7 +214,7 @@ super + {_,shift + }{1-4,a,s,d,z,x,c}
     bspc {desktop -f,node -d} '^{1-4,5,6,7,8,9,10}'
 
 # rotate tree clockwise/counter clockwise
-super + alt + {z,x}
+alt + {z,x}
     bspc node @parent -R {270,90}
 
 
@@ -223,19 +223,19 @@ super + alt + {z,x}
 #
 
 # preselect the direction
-super + ctrl + {h,j,k,l}
+alt + ctrl + {a,s,w,d}
     bspc node -p {west,south,north,east}
 
 # preselect the ratio
-super + ctrl + {1-9}
+alt + ctrl + {1-9}
     bspc node -o 0.{1-9}
 
 # cancel the preselection for the focused node
-super + ctrl + space
+alt + ctrl + space
     bspc node -p cancel
 
 # cancel the preselection for the focused desktop
-super + ctrl + shift + space
+alt + ctrl + shift + space
     bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
 
 
@@ -244,11 +244,11 @@ super + ctrl + shift + space
 #
 
 # expand the tiled space in the given direction
-super + alt + {h,j,k,l}
+super + alt + {a,s,w,d}
     bspc node {@west -r -10,@south -r +10,@north -r -10,@east -r +10}
 
 # contract the tiled space in the given direction
-super + alt + shift + {h,j,k,l}
+super + alt + shift + {a,s,w,d}
     bspc node {@east -r -10,@north -r +10,@south -r -10,@west -r +10}
 
 # move a floating window

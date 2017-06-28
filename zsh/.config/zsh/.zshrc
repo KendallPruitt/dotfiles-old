@@ -50,7 +50,7 @@ echo -ne "\033]12;$COLOR_BLUE2\007"
 ZSH_THEME="powerlevel9k/powerlevel9k"
 
 # Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+CASE_SENSITIVE="true"
 
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
@@ -162,7 +162,7 @@ setopt COMPLETE_ALIASES
 
 setopt BANG_HIST
 setopt EXTENDED_HISTORY
-setopt INC_APPEND_HISTORY
+# setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_IGNORE_DUPS
