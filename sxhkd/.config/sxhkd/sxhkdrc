@@ -161,7 +161,6 @@ super + {_,shift + }grave
 #    bspc desktop -f {prev,next}
 super + {_,shift + }Tab
     bspc desktop -f {next,prev}
-### add commands for moving focused window to next/previous desktop
 ## focus the last node/desktop
 hyper + {grave,Tab}
     bspc {node,desktop} -f last
@@ -176,6 +175,9 @@ super + {_,shift + }{q,w,e,r,a,s,d,z,x,c}
 ## rotate tree clockwise/counter clockwise
 hyper + {q,e}
     bspc node @parent -R {270,90}
+
+### add commands for moving focused window to next/previous desktop
+### also, add commands for swapping the contents of 2 desktops
 
 ###############################################################################
 # preselect

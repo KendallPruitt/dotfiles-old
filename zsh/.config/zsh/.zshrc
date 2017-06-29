@@ -245,6 +245,7 @@ POWERLEVEL9K_VCS_CLEAN_FOREGROUND='015'
 POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='005'
 POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND='015'
 
+alias lh="LC_COLLATE=C ls -lh --group-directories-first"
 alias l="LC_COLLATE=C ls -lAh --group-directories-first"
 alias sup="sudo -E -s"
 alias calc="bc -lq"
