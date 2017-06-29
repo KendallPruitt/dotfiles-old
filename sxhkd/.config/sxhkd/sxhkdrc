@@ -1,5 +1,8 @@
 ### 3 '#'s denote shortcuts made by me (not including shortcuts I've edited)
 
+### test config
+{super,hyper} 7
+    {rofi -show run,volumeadjust -d}
 
 #
 # wm independent hotkeys
@@ -12,7 +15,6 @@ super + Return
 # program launcher
 super + space
     rofi -show run
-#    dmenu_extended_run
 
 # make sxhkd reload its configuration files:
 ctrl + Escape
@@ -82,6 +84,10 @@ XF86AudioNext
 ###
 ### other shortcuts added by me
 ###
+
+### caps lock
+hyper + Escape
+    xdotool key Caps_Lock
 
 ### horizontal scrolling
 super + button{4,5}
@@ -179,11 +185,11 @@ super + ctrl + {x,y,z}
 #
 
 # focus the node (or send it) in the given direction
-alt + {_,shift + }{a,s,w,d}
+hyper + {_,shift + }{a,s,w,d}
     bspc node -{f,s} {west,south,north,east}
 
 # focus the node for the given path jump
-super + {v,b,n,m}
+hyper + {z,x,c,v}
     bspc node -f @{parent,brother,first,second}
 
 # focus the next/previous node
@@ -191,12 +197,14 @@ super + {_,shift + }e
     bspc node -f {next,prev}
 
 # focus the next/previous desktop
-super + bracket{left,right}
+# super + bracket{left,right}
+#     bspc desktop -f {prev,next}
+super + {_,shift + }Tab
     bspc desktop -f {prev,next}
 ### add commands for moving focused window to next/previous desktop
 
 # focus the last node/desktop
-super + {grave,Tab}
+hyper + {grave,Tab}
     bspc {node,desktop} -f last
 
 # focus the older or newer node in the focus history
@@ -214,7 +222,7 @@ super + {_,shift + }{1-4,a,s,d,z,x,c}
     bspc {desktop -f,node -d} '^{1-4,5,6,7,8,9,10}'
 
 # rotate tree clockwise/counter clockwise
-alt + {z,x}
+hyper + {q,e}
     bspc node @parent -R {270,90}
 
 
@@ -223,19 +231,19 @@ alt + {z,x}
 #
 
 # preselect the direction
-alt + ctrl + {a,s,w,d}
+hyper + alt + {a,s,w,d}
     bspc node -p {west,south,north,east}
 
 # preselect the ratio
-alt + ctrl + {1-9}
+hyper + alt + {1-9}
     bspc node -o 0.{1-9}
 
 # cancel the preselection for the focused node
-alt + ctrl + space
+hyper + space
     bspc node -p cancel
 
 # cancel the preselection for the focused desktop
-alt + ctrl + shift + space
+hyper + shift + space
     bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
 
 

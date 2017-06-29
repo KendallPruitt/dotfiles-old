@@ -13,22 +13,33 @@
 [keybindings]
   broadcast_all = <Alt>b
   broadcast_off = <Alt>h
-  close_term = <Primary>w
+  close_term = <Alt>c
   cycle_next = <Primary><Shift>Page_Down
   cycle_prev = <Primary><Shift>Page_Up
-  go_down = <Alt><Super>s
-  go_left = <Alt><Super>a
-  go_right = <Alt><Super>d
-  go_up = <Alt><Super>w
+  go_down = <Alt>s
+  go_left = <Alt>a
+  go_right = <Alt>d
+  go_up = <Alt>w
+  group_all = <Alt>j
+  group_tab = <Alt>t
+  insert_number = <Alt>u
+  insert_padded = <Alt>k
   move_tab_left = <Primary>Page_Up
   move_tab_right = <Primary>Page_Down
   new_tab = <Primary>t
+  new_terminator = <Alt>i
   next_tab = <Primary>Tab
   prev_tab = <Primary><Shift>Tab
-  rotate_ccw = <Alt><Super>z
-  rotate_cw = <Alt><Super>x
-  split_horiz = <Alt>c
-  split_vert = <Alt>v
+  resize_down = <Primary><Alt>s
+  resize_left = <Primary><Alt>a
+  resize_right = <Primary><Alt>d
+  resize_up = <Primary><Alt>w
+  rotate_ccw = <Alt>q
+  rotate_cw = <Alt>e
+  split_horiz = <Alt>z
+  split_vert = <Alt>x
+  ungroup_all = <Primary><Shift>g
+  ungroup_tab = <Primary><Shift>t
 [layouts]
   [[default]]
     [[[child1]]]
