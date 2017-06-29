@@ -1,53 +1,38 @@
+###############################################################################
 ### 3 '#'s denote shortcuts made by me (not including shortcuts I've edited)
+###############################################################################
 
-### test config
-{super,hyper} 7
-    {rofi -show run,volumeadjust -d}
-
-#
+###############################################################################
 # wm independent hotkeys
-#
-
-# terminal emulator
+###############################################################################
+## terminal emulator
 super + Return
     terminator
-
-# program launcher
+## program launcher
 super + space
     rofi -show run
-
-# make sxhkd reload its configuration files:
+## make sxhkd reload its configuration files:
 ctrl + Escape
     pkill -USR1 -x sxhkd
 
-### lock screen
-ctrl + alt + l
-    i3lock-extra -s -p
-
-###
+###############################################################################
 ### tdrop
-###
-
-### 
+###############################################################################
 alt + space
     tdrop -a -w 1440 -h 435 -y 20 -s dropdown termite
 
-###
+###############################################################################
 ### multimedia keys
-###
-
+###############################################################################
 ### increase volume
 XF86AudioRaiseVolume
     volumeadjust -u
-
 ### decrease volume
 XF86AudioLowerVolume
     volumeadjust -d
-
 ### mute volume
 XF86AudioMute
     volumeadjust -t
-
 ### stop
 XF86AudioStop
     mediakeysend -s
@@ -61,231 +46,182 @@ XF86AudioPlay
 XF86AudioNext
     mediakeysend -f
 
-###
+###############################################################################
 ### brightness keys
-###
-
+###############################################################################
 ### increase monitor brightness
 # XF86MonBrightnessUp
 #     brightnessadjust -M
-
 ### decrease monitor brightness
 # XF86MonBrightnessDown
 #     brightnessadjust -m
-
 ### increase keyboard brightness
 # XF86KbdBrightnessUp
 #     brightnessadjust -K
-
 ### decrease keyboard brightness
 # XF86KbdBrightnessDown
 #     brightnessadjust -k
 
-###
-### other shortcuts added by me
-###
-
+###############################################################################
+### Other shortcuts added by me
+###############################################################################
+### lock screen
+ctrl + alt + l
+    i3lock-extra -s -p
 ### caps lock
 hyper + Escape
     xdotool key Caps_Lock
-
 ### horizontal scrolling
 super + button{4,5}
     xdotool click {6,7}
-
 ### next/previous tab
 super + button{8,9}
     xdotool key ctrl+{Prior,Next}
 #super + button9
 #    xdotool key ctrl+Next
-
 ### desktop scrolling
 #super + button{4,5}
 #    bspc desktop -f {prev,next}
 
-################################################################################
+###############################################################################
 ### Rocket League
-################################################################################
+###############################################################################
 ### move rocket league floating window to proper position
 super + shift + alt + ctrl + a
     rocketl -a
-
 ### kill rocket league
 super + shift + alt + ctrl + w
     rocketl -w
-
 ### rocket league solo
 super + shift + alt + ctrl + s
     rocketl -s
-
 ### rocket league dual
 super + shift + alt + ctrl + d
     rocketl -d
-################################################################################
+
+###############################################################################
 ### ScreenShots
-################################################################################
+###############################################################################
 ### grab screen
 super + shift + ctrl + 1
     maim ~/images/screenshots/$(date +%y-%m-%d_%I-%M-%S).png
-
 ### grab window
 super + shift + ctrl + 2
     scrot -u '%y-%m-%d_%I-%M-%S.png' -e 'mv $f ~/images/screenshots/'
-
 ### grab rectangular selection
 super + shift + ctrl + 3
     maim -s ~/images/screenshots/$(date +%y-%m-%d_%I-%M-%S).png
 
-################################################################################
-
-#
+###############################################################################
 # bspwm hotkeys
-#
-
-# quit bspwm normally
+###############################################################################
+## quit bspwm normally
 super + alt + Escape
     bspc quit
-
-# close and kill
-super + {_,shift + }q
+## close and kill
+super + {_,shift + }Escape
     bspc node -{c,k}
-
-# alternate between the tiled and monocle layout
+## alternate between the tiled and monocle layout
 super + u
     bspc desktop -l next
-
-# if the current node is automatic, send it to the last manual, otherwise pull the last leaf
+## if the current node is automatic, send it to the last manual, otherwise pull the last leaf
 super + y
     bspc query -N -n focused.automatic && bspc node -n last.!automatic || bspc node last.leaf -n focused
-
-# swap the current node and the biggest node
+## swap the current node and the biggest node
 super + p
     bspc node -s biggest
-
-# reducing gap on the fly
+## reducing gap on the fly
 alt + {minus,equal}
     bspc config -d focused window_gap $((`bspc config -d focused window_gap` {+,-} 2 ))
 
-
-#
+###############################################################################
 # state/flags
-#
-
-# set the window state
+###############################################################################
+## set the window state
 super + {t,shift + t,f,g}
     bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
-
-# set the node flags
-super + ctrl + {x,y,z}
+## set the node flags
+super + {l,k,j}
     bspc node -g {locked,sticky,private}
 
-
-#
+###############################################################################
 # focus/swap
-#
-
-# focus the node (or send it) in the given direction
+###############################################################################
+## focus the node (or send it) in the given direction
 hyper + {_,shift + }{a,s,w,d}
     bspc node -{f,s} {west,south,north,east}
-
-# focus the node for the given path jump
+## focus the node for the given path jump
 hyper + {z,x,c,v}
     bspc node -f @{parent,brother,first,second}
-
-# focus the next/previous node
-super + {_,shift + }e
+## focus the next/previous node
+super + {_,shift + }grave
     bspc node -f {next,prev}
-
-# focus the next/previous desktop
-# super + bracket{left,right}
-#     bspc desktop -f {prev,next}
+## focus the next/previous desktop
+#super + bracket{left,right}
+#    bspc desktop -f {prev,next}
 super + {_,shift + }Tab
-    bspc desktop -f {prev,next}
+    bspc desktop -f {next,prev}
 ### add commands for moving focused window to next/previous desktop
-
-# focus the last node/desktop
+## focus the last node/desktop
 hyper + {grave,Tab}
     bspc {node,desktop} -f last
-
-# focus the older or newer node in the focus history
+## focus the older or newer node in the focus history
 super + {o,i}
     bspc wm -h off; \
     bspc node {older,newer} -f; \
     bspc wm -h on
-
-# focus or send to the given desktop
-#super + {_,shift + }{1-5}
-#    bspc {desktop -f,node -d} '^{1-5}'
-#super + alt + {_,shift + }{1-5}
-#    bspc {desktop -f,node -d} '^{6-9,10}'
-super + {_,shift + }{1-4,a,s,d,z,x,c}
-    bspc {desktop -f,node -d} '^{1-4,5,6,7,8,9,10}'
-
-# rotate tree clockwise/counter clockwise
+## focus or send to the given desktop
+super + {_,shift + }{q,w,e,r,a,s,d,z,x,c}
+    bspc {desktop -f,node -d} '^{1,2,3,4,5,6,7,8,9,10}'
+## rotate tree clockwise/counter clockwise
 hyper + {q,e}
     bspc node @parent -R {270,90}
 
-
-#
+###############################################################################
 # preselect
-#
-
-# preselect the direction
+###############################################################################
+## preselect the direction
 hyper + alt + {a,s,w,d}
     bspc node -p {west,south,north,east}
-
-# preselect the ratio
+## preselect the ratio
 hyper + alt + {1-9}
     bspc node -o 0.{1-9}
-
-# cancel the preselection for the focused node
+## cancel the preselection for the focused node
 hyper + space
     bspc node -p cancel
-
-# cancel the preselection for the focused desktop
+## cancel the preselection for the focused desktop
 hyper + shift + space
     bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
 
-
-#
+###############################################################################
 # resize tiled/floating
-#
-
-# expand the tiled space in the given direction
+###############################################################################
+## expand the tiled space in the given direction
 super + alt + {a,s,w,d}
     bspc node {@west -r -10,@south -r +10,@north -r -10,@east -r +10}
-
-# contract the tiled space in the given direction
+## contract the tiled space in the given direction
 super + alt + shift + {a,s,w,d}
     bspc node {@east -r -10,@north -r +10,@south -r -10,@west -r +10}
-
-# move a floating window
+## move a floating window
 super + {Left,Down,Up,Right}
     xdo move {-x -20,-y +20,-y -20,-x +20}
 
-
-#
+###############################################################################
 # pointer focus/move/resize
-#
-
-# focus
+###############################################################################
+## focus
 ~button1
     bspc pointer -g focus
-
-# start move/resize
+## start move/resize
 super + button{1-3}
     bspc pointer -g {move,resize_side,resize_corner}
-
 super + !button{1-3}
     bspc pointer -t %i %i
-
 super + @button{1-3}
     bspc pointer -u
-
-# old start move/resize
+## old start move/resize
 #super + button{1-3}
-#   ; bspc pointer -g {move,resize_side,resize_corner}
-
-# old end move/resize
+#    bspc pointer -g {move,resize_side,resize_corner}
+## old end move/resize
 #super + @button{1-3}
-#   bspc pointer -u
+#    bspc pointer -u
